@@ -19,7 +19,6 @@ fun Navigate() {
         composable("ChatsFrame") { ChatsFrame(navController) }
         composable("DialogFrame/{chatName}") { backStackEntry ->
             DialogFrame(navController, backStackEntry.arguments?.getString("chatName"))
-
         }
     }
 }
@@ -29,9 +28,13 @@ fun InviteFrame(navController: NavController) {
     InviteFrameImpl { navController.navigate("ChatsFrame") }
 }
 
+val exampleOfChatsList = Array(30) { it.toString() }
+
 @Composable
 fun ChatsFrame(navController: NavController) {
-    ChatsFrameImpl { chosenChatName -> navController.navigate("DialogFrame/$chosenChatName") }
+    ChatsFrameImpl(exampleOfChatsList) { chosenChatName ->
+        navController.navigate("DialogFrame/$chosenChatName")
+    }
 }
 
 @Composable
