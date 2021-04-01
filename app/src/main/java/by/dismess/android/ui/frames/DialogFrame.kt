@@ -6,7 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun DialogFrameImpl(onBackToChats: () -> Unit, chatName: String) {
+fun DialogFrameImpl(chatName: String, onBackToChats: () -> Unit) {
     Column {
         Text(chatName)
         Button(onBackToChats) {

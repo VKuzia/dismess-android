@@ -39,5 +39,5 @@ fun ChatsFrame(navController: NavController) {
 
 @Composable
 fun DialogFrame(navController: NavController, chatName: String?) {
-    DialogFrameImpl({ navController.navigate("ChatsFrame") }, chatName.toString())
+    DialogFrameImpl(chatName.toString()) { navController.navigate("ChatsFrame") }
 }

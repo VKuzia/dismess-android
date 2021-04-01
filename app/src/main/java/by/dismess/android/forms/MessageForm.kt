@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import by.dismess.android.ui.theme.OTHERS_MESSAGE_COLOR
 import by.dismess.android.ui.theme.OWNERS_MESSAGE_COLOR
@@ -50,4 +51,10 @@ fun getColorForType(type: MessageType): Color {
         }
         else -> Color.White
     }
+}
+
+@Preview
+@Composable
+fun MessageFormDefaultPreview() {
+    MessageForm(author = "Author", message = "Message", messageType = MessageType.OWNERS)
 }
