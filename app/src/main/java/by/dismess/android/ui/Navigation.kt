@@ -37,7 +37,11 @@ fun ChatsFrame(navController: NavController) {
     }
 }
 
+val exampleOfMessages = MutableList(5) { it.toString() }
+
 @Composable
 fun DialogFrame(navController: NavController, chatName: String?) {
-    DialogFrameImpl(chatName.toString()) { navController.navigate("ChatsFrame") }
+    DialogFrameImpl(chatName.toString(), exampleOfMessages) {
+        navController.navigate("ChatsFrame")
+    }
 }
