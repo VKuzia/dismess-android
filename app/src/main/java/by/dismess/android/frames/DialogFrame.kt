@@ -25,12 +25,10 @@ import androidx.compose.runtime.Composable as Composable
 
 @Composable
 fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToChats: () -> Unit) {
-    val textState = remember { mutableStateOf(TextFieldValue()) }
-
     Column {
         TopPanel(chatName, onBackToChats)
         FlexChild(Modifier.weight(10f)) { MessageList(messages) }
-        FlexChild(Modifier.weight(1f)) { TextPanel(textState, messages) }
+        FlexChild(Modifier.weight(1f)) { TextPanel(messages) }
     }
 }
 
@@ -57,7 +55,9 @@ fun MessageList(messages: MutableList<String>) {
 }
 
 @Composable
-fun TextPanel(textState: MutableState<TextFieldValue>, messages: MutableList<String>) {
+fun TextPanel(messages: MutableList<String>) {
+    val textState = remember { mutableStateOf(TextFieldValue()) }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = textState.value,
@@ -77,11 +77,7 @@ fun TextPanel(textState: MutableState<TextFieldValue>, messages: MutableList<Str
     }
 }
 
-fun addMessage(message: String, messagesList: MutableList<String>) {
-    messagesList.add(message)
-}
-
 fun onSendMessage(textState: MutableState<TextFieldValue>, messages: MutableList<String>) {
-    addMessage(textState.value.text, messages)
+    messages.add(textState.value.text)
     textState.value = TextFieldValue()
 }
