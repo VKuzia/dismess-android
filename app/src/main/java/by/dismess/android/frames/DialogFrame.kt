@@ -13,22 +13,23 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import by.dismess.android.forms.MessageForm
 import by.dismess.android.forms.MessageType
-import by.dismess.android.ui.FlexChild
 import androidx.compose.runtime.Composable as Composable
 
 @Composable
 fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToChats: () -> Unit) {
+    val messagesList = remember { messages.toMutableStateList() }
     Column {
         TopPanel(chatName, onBackToChats)
-        FlexChild(Modifier.weight(10f)) { MessageList(messages) }
-        FlexChild(Modifier.weight(1f)) { TextPanel(messages) }
+        MessageList(Modifier.weight(10f), messagesList)
+        TextPanel(Modifier.weight(1f)) { messagesList.add(it) }
     }
 }
 
@@ -45,8 +46,8 @@ fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
 }
 
 @Composable
-fun MessageList(messages: MutableList<String>) {
-    LazyColumn {
+fun MessageList(modifier: Modifier, messages: SnapshotStateList<String>) {
+    LazyColumn(modifier = modifier) {
         items(messages) {
             MessageForm("Owner", it, MessageType.OWNERS)
             MessageForm("Other", it, MessageType.OTHERS)
@@ -55,10 +56,10 @@ fun MessageList(messages: MutableList<String>) {
 }
 
 @Composable
-fun TextPanel(messages: MutableList<String>) {
+fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = modifier.fillMaxWidth()) {
         TextField(
             value = textState.value,
             onValueChange = { textState.value = it },
@@ -67,7 +68,10 @@ fun TextPanel(messages: MutableList<String>) {
                 .fillMaxWidth()
         )
         Button(
-            onClick = { onSendMessage(textState, messages) },
+            onClick = {
+                onMessagesListUpdated(textState.value.text)
+                textState.value = TextFieldValue()
+            },
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
@@ -75,9 +79,4 @@ fun TextPanel(messages: MutableList<String>) {
             Text("Send")
         }
     }
-}
-
-fun onSendMessage(textState: MutableState<TextFieldValue>, messages: MutableList<String>) {
-    messages.add(textState.value.text)
-    textState.value = TextFieldValue()
 }
