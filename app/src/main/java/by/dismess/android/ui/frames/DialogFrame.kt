@@ -49,8 +49,8 @@ fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
 fun MessageList(modifier: Modifier, messages: SnapshotStateList<String>) {
     LazyColumn(modifier = modifier) {
         items(messages) {
-            MessageForm("Owner", it, MessageType.OWNERS)
-            MessageForm("Other", it, MessageType.OTHERS)
+            MessageForm(it, "3:45", MessageType.OWNERS)
+            MessageForm(it, "3:45", MessageType.OTHERS)
         }
     }
 }
