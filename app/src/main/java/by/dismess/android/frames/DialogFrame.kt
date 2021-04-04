@@ -3,6 +3,7 @@ package by.dismess.android.frames
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import by.dismess.android.forms.MessageForm
@@ -74,18 +76,15 @@ fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
         TextField(
             value = textState.value,
             onValueChange = { textState.value = it },
-            modifier = Modifier
-                .weight(6f)
-                .fillMaxWidth()
+            maxLines = 4,
+            modifier = modifier.fillMaxWidth()
         )
         Button(
             onClick = {
                 onMessagesListUpdated(textState.value.text)
                 textState.value = TextFieldValue()
             },
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
+            modifier = Modifier.wrapContentWidth(Alignment.End)
         ) {
             Text("Send")
         }
