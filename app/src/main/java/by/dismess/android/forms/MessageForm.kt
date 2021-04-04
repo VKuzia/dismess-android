@@ -2,8 +2,11 @@ package by.dismess.android.forms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,16 +24,31 @@ enum class MessageType {
 }
 
 @Composable
-fun MessageForm(author: String, message: String, messageType: MessageType) {
+fun MessageForm(message: String, date: String, messageType: MessageType) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
-            .background(getColorForType(messageType))
+            .padding(8.dp)
+            .background(Color.Transparent)
             .fillMaxWidth()
+            .wrapContentWidth(getAlignmentForType(messageType))
     ) {
-        Column(horizontalAlignment = getAlignmentForType(messageType)) {
-            Text(author, fontSize = 24.sp)
-            Text(message)
+        Row(
+            modifier = Modifier
+                .background(getColorForType(messageType))
+        ) {
+            Text(
+                message,
+                modifier = Modifier
+                    .widthIn(0.dp, 200.dp)
+                    .padding(4.dp)
+            )
+            Text(
+                date,
+                fontSize = 9.sp,
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .padding(4.dp)
+            )
         }
     }
 }
@@ -65,7 +83,24 @@ fun getColorForType(type: MessageType): Color {
 @Composable
 fun MessageFormDefaultPreview() {
     Column {
-        MessageForm(author = "Author", message = "Message", messageType = MessageType.OWNERS)
-        MessageForm(author = "Aor", message = "Mee", messageType = MessageType.OTHERS)
+        MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
+        MessageForm(
+            message = "Long Long Long Long Long Long Long Long Long Message",
+            date = "20:45",
+            messageType = MessageType.OWNERS
+        )
+        MessageForm(
+            message = "Long Long Long Long Long Long Long Long Long Message",
+            date = "12:33",
+            messageType = MessageType.OTHERS
+        )
+        MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
+        MessageForm(
+            message = "Long Long Long Long Long Long Long Long Long Long " +
+                "Long Long Long Long Long Long Long Long Message",
+            date = "20:45",
+            messageType = MessageType.OWNERS
+        )
+        MessageForm(message = "Short", date = "13:24", messageType = MessageType.OTHERS)
     }
 }
