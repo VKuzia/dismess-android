@@ -1,4 +1,4 @@
-package by.dismess.android
+package by.dismess.android.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import by.dismess.android.frames.ChatsFrameImpl
-import by.dismess.android.frames.DialogFrameImpl
-import by.dismess.android.frames.InviteFrameImpl
+import by.dismess.android.ui.frames.ChatsFrameImpl
+import by.dismess.android.ui.frames.DialogFrameImpl
+import by.dismess.android.ui.frames.InviteFrameImpl
 
 @Composable
 fun Navigate() {

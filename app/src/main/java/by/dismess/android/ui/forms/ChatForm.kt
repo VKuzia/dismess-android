@@ -1,4 +1,4 @@
-package by.dismess.android.forms
+package by.dismess.android.ui.forms
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

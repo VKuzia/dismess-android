@@ -1,4 +1,4 @@
-package by.dismess.android.ui.theme
+package by.dismess.android.ui.theming.theme
 
 import androidx.compose.ui.graphics.Color
 

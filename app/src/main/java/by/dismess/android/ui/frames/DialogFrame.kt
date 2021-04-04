@@ -1,4 +1,4 @@
-package by.dismess.android.frames
+package by.dismess.android.ui.frames
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button

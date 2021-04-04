@@ -1,4 +1,4 @@
-package by.dismess.android.frames
+package by.dismess.android.ui.frames
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
-import by.dismess.android.forms.ChatForm
+import by.dismess.android.ui.forms.ChatForm
 
 @Composable
 fun ChatsFrameImpl(chatList: Array<String>, onDialogStart: (String) -> Unit) {

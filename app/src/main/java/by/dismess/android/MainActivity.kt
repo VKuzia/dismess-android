@@ -5,7 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import by.dismess.android.ui.theme.DismessTheme
+import by.dismess.android.ui.Navigate
+import by.dismess.android.ui.theming.theme.DismessTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
