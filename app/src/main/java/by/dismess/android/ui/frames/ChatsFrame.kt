@@ -90,7 +90,6 @@ fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Uni
                         Button(
                             onClick = {
                                 setCopiedState(true)
-//                                setShowDialog(false)
                             },
                             modifier = Modifier.weight(1f)
                         ) {
@@ -119,6 +118,13 @@ fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: (Boolean
 
 @Preview
 @Composable
-fun DefaultPreview() {
-    TopPanel {}
+fun ChatsFrameDefaultPreview() {
+    val chatList = arrayOf("One", "Two", "Three", "Four")
+    ChatsFrameImpl(chatList) { }
+}
+
+@Preview
+@Composable
+fun ChatsFrameAboutDialogPreview() {
+    AboutDialog(id = "12345", showDialog = true) {}
 }

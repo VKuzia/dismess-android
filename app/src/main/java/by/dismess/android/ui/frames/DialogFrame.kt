@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
@@ -23,6 +25,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
 import kotlinx.coroutines.launch
@@ -88,5 +91,14 @@ fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
         ) {
             Text("Send")
         }
+    }
+}
+
+@Preview
+@Composable
+fun DialogFrameDefaultPreview() {
+    val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
+    Surface(color = MaterialTheme.colors.background) {
+        DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
     }
 }
