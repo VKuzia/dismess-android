@@ -2,7 +2,14 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Derovi/dismess")
+            credentials {
+                username = 'distmess'
+                password = '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'
+            }
+        }
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
