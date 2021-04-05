@@ -23,8 +23,8 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
-import by.dismess.android.forms.MessageForm
-import by.dismess.android.forms.MessageType
+import by.dismess.android.ui.forms.MessageForm
+import by.dismess.android.ui.forms.MessageType
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
 

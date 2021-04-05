@@ -1,4 +1,4 @@
-package by.dismess.android.forms
+package by.dismess.android.ui.forms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import by.dismess.android.ui.theme.OTHERS_MESSAGE_COLOR
-import by.dismess.android.ui.theme.OWNERS_MESSAGE_COLOR
+import by.dismess.android.ui.theming.theme.OTHERS_MESSAGE_COLOR
+import by.dismess.android.ui.theming.theme.OWNERS_MESSAGE_COLOR
 
 enum class MessageType {
     OWNERS, OTHERS, PROGRAMS,
