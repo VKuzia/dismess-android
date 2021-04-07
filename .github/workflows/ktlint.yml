@@ -1,3 +1,4 @@
+
 name: ktlint
 
 on:
@@ -14,4 +15,5 @@ jobs:
        - name: "checkout"
          uses: actions/checkout@v2
 
-       - name: "ktlint" uses: "vroy/gha-kotlin-linter@v1"
+       - name: "ktlint"
+         uses: "vroy/gha-kotlin-linter@v1"
