@@ -16,9 +16,11 @@ class MainActivity : ComponentActivity() {
         startKoin {
             androidContext(this@MainActivity)
             modules(
-                snappyModule
+                snappyModule,
+                coreImplModule,
             )
         }
+
         setContent {
             DismessTheme {
                 Surface(color = MaterialTheme.colors.background) {
