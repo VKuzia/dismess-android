@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
             androidContext(this@MainActivity)
             modules(
                 snappyModule,
-                coreImplModule,
+                coreImplModule
             )
         }
 
