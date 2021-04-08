@@ -50,7 +50,7 @@ fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToCha
 }
 
 @Composable
-fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
+private fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
     TopAppBar(
         title = { Text(chatName) },
         navigationIcon = {
@@ -62,7 +62,7 @@ fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
 }
 
 @Composable
-fun MessageList(modifier: Modifier, state: LazyListState, messages: SnapshotStateList<String>) {
+private fun MessageList(modifier: Modifier, state: LazyListState, messages: SnapshotStateList<String>) {
     LazyColumn(modifier = modifier, state = state) {
         items(messages) {
             MessageForm(it, "3:45", MessageType.OWNERS)
@@ -72,7 +72,7 @@ fun MessageList(modifier: Modifier, state: LazyListState, messages: SnapshotStat
 }
 
 @Composable
-fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
+private fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
 
     Row(modifier = modifier.fillMaxWidth()) {
@@ -96,7 +96,7 @@ fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
 
 @Preview
 @Composable
-fun DialogFrameDefaultPreview() {
+private fun DialogFrameDefaultPreview() {
     val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
     Surface(color = MaterialTheme.colors.background) {
         DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }

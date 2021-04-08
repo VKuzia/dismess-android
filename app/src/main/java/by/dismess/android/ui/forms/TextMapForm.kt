@@ -1,4 +1,4 @@
-package by.dismess.android.forms
+package by.dismess.android.ui.forms
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +14,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
-    Row(modifier = Modifier.fillMaxWidth().padding(padding)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(padding)
+    ) {
         Text(text = "$key:", textAlign = TextAlign.Left)
         Text(text = value, textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
     }
@@ -22,7 +26,7 @@ fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
 
 @Preview
 @Composable
-fun TextMapFormDefaultPreview() {
+private fun TextMapFormDefaultPreview() {
     Column {
         TextMapForm(key = "hello", value = "it's me")
         TextMapForm(key = "ip", value = "127.0.0.1")

@@ -31,8 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import by.dismess.android.forms.TextMapForm
 import by.dismess.android.ui.forms.ChatForm
+import by.dismess.android.ui.forms.TextMapForm
 
 @Composable
 fun ChatsFrameImpl(chatList: Array<String>, onDialogStart: (String) -> Unit) {
@@ -49,7 +49,7 @@ fun ChatsFrameImpl(chatList: Array<String>, onDialogStart: (String) -> Unit) {
 }
 
 @Composable
-fun TopPanel(onAboutTriggered: () -> Unit) {
+private fun TopPanel(onAboutTriggered: () -> Unit) {
     TopAppBar(
         title = { Text("Dismess") },
         navigationIcon = {
@@ -61,7 +61,7 @@ fun TopPanel(onAboutTriggered: () -> Unit) {
 }
 
 @Composable
-fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Unit) {
+private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Unit) {
     val (copiedState, setCopiedState) = remember { mutableStateOf(false) }
     if (showDialog) {
         Dialog(onDismissRequest = { setShowDialog(false) }) {
@@ -103,7 +103,7 @@ fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Uni
 }
 
 @Composable
-fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: (Boolean) -> Unit) {
+private fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: (Boolean) -> Unit) {
     if (copiedState) {
         val clipboardManager =
             LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -116,13 +116,13 @@ fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: (Boolean
 
 @Preview
 @Composable
-fun ChatsFrameDefaultPreview() {
+private fun ChatsFrameDefaultPreview() {
     val chatList = arrayOf("One", "Two", "Three", "Four")
     ChatsFrameImpl(chatList) { }
 }
 
 @Preview
 @Composable
-fun ChatsFrameAboutDialogPreview() {
+private fun ChatsFrameAboutDialogPreview() {
     AboutDialog(id = "12345", showDialog = true) {}
 }

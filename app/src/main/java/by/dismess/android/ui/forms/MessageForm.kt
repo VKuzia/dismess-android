@@ -53,7 +53,7 @@ fun MessageForm(message: String, date: String, messageType: MessageType) {
     }
 }
 
-fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
+private fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
     return when (type) {
         MessageType.OWNERS -> {
             Alignment.End
@@ -67,7 +67,7 @@ fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
     }
 }
 
-fun getColorForType(type: MessageType): Color {
+private fun getColorForType(type: MessageType): Color {
     return when (type) {
         MessageType.OWNERS -> {
             OWNERS_MESSAGE_COLOR
@@ -81,7 +81,7 @@ fun getColorForType(type: MessageType): Color {
 
 @Preview
 @Composable
-fun MessageFormDefaultPreview() {
+private fun MessageFormDefaultPreview() {
     Column {
         MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
         MessageForm(
