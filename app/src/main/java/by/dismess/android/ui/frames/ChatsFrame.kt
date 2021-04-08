@@ -1,6 +1,5 @@
 package by.dismess.android.ui.frames
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -103,7 +102,6 @@ fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Uni
     CopyToClipboard(id, copiedState, setCopiedState)
 }
 
-@SuppressLint("ServiceCast")
 @Composable
 fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: (Boolean) -> Unit) {
     if (copiedState) {
