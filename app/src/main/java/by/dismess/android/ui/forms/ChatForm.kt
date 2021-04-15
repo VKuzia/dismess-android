@@ -34,6 +34,6 @@ fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = 
 
 @Preview
 @Composable
-fun DefaultPreview() {
+private fun ChatFormDefaultPreview() {
     ChatForm("Some chat", {}, "Last message")
 }

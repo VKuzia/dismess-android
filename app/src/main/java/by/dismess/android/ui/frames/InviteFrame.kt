@@ -18,6 +18,6 @@ fun InviteFrameImpl(onValidInvite: () -> Unit) {
 
 @Preview
 @Composable
-fun DefaultPreview() {
+private fun InviteFrameDefaultPreview() {
     InviteFrameImpl {}
 }

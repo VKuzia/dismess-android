@@ -1,16 +1,104 @@
 package by.dismess.android.ui.frames
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
+import by.dismess.android.ui.forms.MessageForm
+import by.dismess.android.ui.forms.MessageType
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.Composable as Composable
 
 @Composable
-fun DialogFrameImpl(onBackToChats: () -> Unit, chatName: String) {
+fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToChats: () -> Unit) {
+    val messagesList = remember { messages.toMutableStateList() }
+    val lazyListState = remember { LazyListState() }
+    val coroutineScope = rememberCoroutineScope()
+
     Column {
-        Text(chatName)
-        Button(onBackToChats) {
-            Text("Back To Chats")
+        TopPanel(chatName, onBackToChats)
+        MessageList(Modifier.weight(10f), lazyListState, messagesList)
+        TextPanel(Modifier.weight(1f)) {
+            messagesList.add(it)
+            coroutineScope.launch {
+                lazyListState.animateScrollToItem(messagesList.lastIndex)
+            }
         }
+    }
+}
+
+@Composable
+private fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
+    TopAppBar(
+        title = { Text(chatName) },
+        navigationIcon = {
+            IconButton(onClick = onBackToChats) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = null)
+            }
+        }
+    )
+}
+
+@Composable
+private fun MessageList(modifier: Modifier, state: LazyListState, messages: SnapshotStateList<String>) {
+    LazyColumn(modifier = modifier, state = state) {
+        items(messages) {
+            MessageForm(it, "3:45", MessageType.OWNERS)
+            MessageForm(it, "3:45", MessageType.OTHERS)
+        }
+    }
+}
+
+@Composable
+private fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
+    val textState = remember { mutableStateOf(TextFieldValue()) }
+
+    Row(modifier = modifier.fillMaxWidth()) {
+        TextField(
+            value = textState.value,
+            onValueChange = { textState.value = it },
+            maxLines = 4,
+            modifier = modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = {
+                onMessagesListUpdated(textState.value.text)
+                textState.value = TextFieldValue()
+            },
+            modifier = Modifier.wrapContentWidth(Alignment.End)
+        ) {
+            Text("Send")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DialogFrameDefaultPreview() {
+    val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
+    Surface(color = MaterialTheme.colors.background) {
+        DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
     }
 }
