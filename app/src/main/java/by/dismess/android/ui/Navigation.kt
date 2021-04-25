@@ -24,8 +24,8 @@ fun Navigate() {
 }
 
 @Composable
-private fun InviteFrame(navController: NavController) {
-    InviteFrameImpl { navController.navigate("ChatsFrame") }
+fun InviteFrame(navController: NavController) {
+    InviteFrameImpl({ _: String, _: String -> true }) { navController.navigate("ChatsFrame") }
 }
 
 private val exampleOfChatsList = Array(30) { it.toString() }
