@@ -9,6 +9,6 @@
 .cxx
 local.properties
 gradlew
-gradle/wrapper/gradle-wrapper.properties
+gradle
 gradlew.bat
 gradle.properties
