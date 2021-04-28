@@ -20,8 +20,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +38,12 @@ import by.dismess.android.ui.forms.TextMapForm
 @Composable
 fun ChatsFrameImpl(
     chatList: Array<String>,
-    onAddChat: () -> Unit,
+    onFindUser: () -> Unit,
     onDialogStart: (String) -> Unit
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Column {
-        TopPanel({ setShowDialog(true) }, onAddChat)
+        TopPanel({ setShowDialog(true) }, onFindUser)
         LazyColumn {
             items(chatList) {
                 ChatForm(it, onDialogStart)
@@ -54,7 +54,7 @@ fun ChatsFrameImpl(
 }
 
 @Composable
-private fun TopPanel(onAboutTriggered: () -> Unit, onAddChat: () -> Unit) {
+private fun TopPanel(onAboutTriggered: () -> Unit, onFindUser: () -> Unit) {
     TopAppBar(
         title = { Text("Dismess") },
         navigationIcon = {
@@ -63,8 +63,8 @@ private fun TopPanel(onAboutTriggered: () -> Unit, onAddChat: () -> Unit) {
             }
         },
         actions = {
-            IconButton(onClick = onAddChat) {
-                Icon(Icons.Filled.AddCircle, contentDescription = null)
+            IconButton(onClick = onFindUser) {
+                Icon(Icons.Filled.Search, contentDescription = null)
             }
         }
     )
