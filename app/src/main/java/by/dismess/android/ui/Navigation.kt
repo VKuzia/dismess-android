@@ -8,6 +8,7 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import by.dismess.android.ui.frames.ChatsFrameImpl
 import by.dismess.android.ui.frames.DialogFrameImpl
+import by.dismess.android.ui.frames.FindUserFrameImpl
 import by.dismess.android.ui.frames.InviteFrameImpl
 
 @Composable
@@ -20,6 +21,7 @@ fun Navigate() {
         composable("DialogFrame/{chatName}") { backStackEntry ->
             DialogFrame(navController, backStackEntry.arguments?.getString("chatName"))
         }
+        composable("FindUserFrame") { FindUserFrame(navController) }
     }
 }
 
@@ -32,7 +34,12 @@ private val exampleOfChatsList = Array(30) { it.toString() }
 
 @Composable
 private fun ChatsFrame(navController: NavController) {
-    ChatsFrameImpl(exampleOfChatsList) { chosenChatName ->
+    ChatsFrameImpl(
+        exampleOfChatsList,
+        {
+            navController.navigate("FindUserFrame")
+        }
+    ) { chosenChatName ->
         navController.navigate("DialogFrame/$chosenChatName")
     }
 }
@@ -42,6 +49,13 @@ private val exampleOfMessages = MutableList(5) { it.toString() }
 @Composable
 private fun DialogFrame(navController: NavController, chatName: String?) {
     DialogFrameImpl(chatName.toString(), exampleOfMessages) {
+        navController.navigate("ChatsFrame")
+    }
+}
+
+@Composable
+private fun FindUserFrame(navController: NavController) {
+    FindUserFrameImpl({ true }, {}) {
         navController.navigate("ChatsFrame")
     }
 }
