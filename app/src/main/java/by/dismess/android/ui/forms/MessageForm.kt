@@ -47,7 +47,7 @@ fun MessageForm(message: String, date: String, messageType: MessageType) {
                 fontSize = 9.sp,
                 modifier = Modifier
                     .align(Alignment.Bottom)
-                    .padding(4.dp)
+                    .padding(4.dp),
             )
         }
     }

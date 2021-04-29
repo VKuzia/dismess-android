@@ -2,6 +2,7 @@ package by.dismess.android.ui.frames
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
@@ -22,11 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> Unit) {
     val inviteFieldState = remember { mutableStateOf(TextFieldValue()) }
     val loginFieldState = remember { mutableStateOf(TextFieldValue()) }
-
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.6f),
+            .fillMaxWidth().fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -49,13 +48,14 @@ fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> 
         ) {
             Text("Proceed")
         }
+        Spacer(modifier = Modifier.fillMaxHeight(0.4f))
     }
 }
 
 @Composable
 private fun Greet() {
     Text(
-        "Welcome to Dismess Messenger",
+        "Welcome to Dismess",
         textAlign = TextAlign.Center
     )
 }

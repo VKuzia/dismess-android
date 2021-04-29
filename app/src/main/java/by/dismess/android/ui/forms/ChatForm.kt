@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = "...") {
     Card(
-        border = BorderStroke(2.dp, Color.Black),
+        border = BorderStroke(2.dp, Color.White),
         shape = RoundedCornerShape(3.dp),
         modifier = Modifier
             .padding(16.dp)
