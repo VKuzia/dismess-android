@@ -36,6 +36,7 @@ import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.OrangePrimary
 
 @Composable
 fun ChatsFrameImpl(
@@ -48,6 +49,7 @@ fun ChatsFrameImpl(
         TopPanel({ setShowDialog(true) }, onFindUser)
         LazyColumn {
             items(chatList) {
+                Divider(color = OrangePrimary, thickness = 1.dp)
                 ChatForm(it, onDialogStart)
             }
         }
@@ -58,15 +60,20 @@ fun ChatsFrameImpl(
 @Composable
 private fun TopPanel(onAboutTriggered: () -> Unit, onFindUser: () -> Unit) {
     TopAppBar(
-        title = { Text("Dismess") },
+        title = {
+            Text(
+                "Dismess",
+                style = MaterialTheme.typography.h5
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onAboutTriggered) {
-                Icon(Icons.Filled.Info, contentDescription = null)
+                Icon(Icons.Filled.Info, contentDescription = null, tint = OrangePrimary)
             }
         },
         actions = {
             IconButton(onClick = onFindUser) {
-                Icon(Icons.Filled.Search, contentDescription = null)
+                Icon(Icons.Filled.Search, contentDescription = null, tint = OrangePrimary)
             }
         }
     )
@@ -78,8 +85,8 @@ private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean
     if (showDialog) {
         Dialog(onDismissRequest = { setShowDialog(false) }) {
             Surface(
-                color = MaterialTheme.colors.background,
-                modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                color = BackgroundColor,
+                shape = RoundedCornerShape(5)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
