@@ -36,9 +36,8 @@ private val exampleOfChatsList = Array(30) { it.toString() }
 private fun ChatsFrame(navController: NavController) {
     ChatsFrameImpl(
         exampleOfChatsList,
-        {
-            navController.navigate("FindUserFrame")
-        }
+        {},
+        { navController.navigate("FindUserFrame") },
     ) { chosenChatName ->
         navController.navigate("DialogFrame/$chosenChatName")
     }
