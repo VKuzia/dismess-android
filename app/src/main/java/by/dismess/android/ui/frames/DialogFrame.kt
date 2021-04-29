@@ -41,7 +41,7 @@ fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToCha
     Column {
         TopPanel(chatName, onBackToChats)
         MessageList(Modifier.weight(10f), lazyListState, messagesList)
-        TextPanel(Modifier.weight(1f)) {
+        SearchPanel(Modifier.weight(1f)) {
             messagesList.add(it)
             coroutineScope.launch {
                 lazyListState.animateScrollToItem(messagesList.lastIndex)
@@ -73,7 +73,7 @@ private fun MessageList(modifier: Modifier, state: LazyListState, messages: Snap
 }
 
 @Composable
-private fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
+private fun SearchPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
 
     Row(modifier = modifier.fillMaxWidth()) {
