@@ -1,6 +1,5 @@
 package by.dismess.android.ui.frames
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -26,11 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
+import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.CustomTextField
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
@@ -67,12 +64,7 @@ fun FindUserFrameImpl(
         Spacer(modifier = Modifier.weight(0.1f))
         SearchButton(searchRunningState, usernameFieldState, lastNameFoundState, findUser)
         Spacer(modifier = Modifier.weight(0.3f))
-        Image(
-            painter = painterResource(id = R.drawable.search_icon),
-            contentDescription = "",
-            modifier = Modifier
-                .clip(CircleShape),
-        )
+        CircularImage(R.drawable.search_icon)
         Spacer(modifier = Modifier.weight(0.3f))
     }
 }

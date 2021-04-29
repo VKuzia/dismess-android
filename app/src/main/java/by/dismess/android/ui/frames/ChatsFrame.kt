@@ -87,22 +87,22 @@ private fun TopPanel(
             }
         },
         actions = {
-            if (!historyRefreshRunningState.value) {
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            historyRefreshRunningState.value = true
-                            onRefreshHistory()
-                            delay(3000)
-                            refreshDoneState.value = true
-                            historyRefreshRunningState.value = false
-                        }
-                    }
-                ) {
-                    Icon(Icons.Filled.Refresh, contentDescription = null, tint = OrangePrimary)
-                }
-            } else {
+            if (historyRefreshRunningState.value) {
                 CircularProgressIndicator(modifier = Modifier.fillMaxHeight(0.8f))
+                return@TopAppBar
+            }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        historyRefreshRunningState.value = true
+                        onRefreshHistory()
+                        delay(3000)
+                        refreshDoneState.value = true
+                        historyRefreshRunningState.value = false
+                    }
+                }
+            ) {
+                Icon(Icons.Filled.Refresh, contentDescription = null, tint = OrangePrimary)
             }
             IconButton(onClick = onFindUser) {
                 Icon(Icons.Filled.Search, contentDescription = null, tint = OrangePrimary)
@@ -162,7 +162,8 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
             LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", text)
         clipboardManager.setPrimaryClip(clip)
-        Toast.makeText(LocalContext.current, "ID copied to clipboard!", Toast.LENGTH_LONG).show()
+        Toast.makeText(LocalContext.current, "ID copied to clipboard!", Toast.LENGTH_LONG)
+            .show()
         copiedState.value = false
     }
 }
@@ -170,7 +171,8 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
 @Composable
 private fun RefreshDoneToast(refreshDoneState: MutableState<Boolean>) {
     if (refreshDoneState.value) {
-        Toast.makeText(LocalContext.current, "History refresh completed", Toast.LENGTH_LONG).show()
+        Toast.makeText(LocalContext.current, "History refresh completed", Toast.LENGTH_LONG)
+            .show()
         refreshDoneState.value = false
     }
 }

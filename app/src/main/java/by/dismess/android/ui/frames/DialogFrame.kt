@@ -1,13 +1,18 @@
 package by.dismess.android.ui.frames
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -16,6 +21,8 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,23 +30,29 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import by.dismess.android.R
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
+import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.OrangePrimary
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
 
 @Composable
 fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToChats: () -> Unit) {
     val messagesList = remember { messages.toMutableStateList() }
+    val historyRefreshRunningState = remember { mutableStateOf(false) }
     val lazyListState = remember { LazyListState() }
     val coroutineScope = rememberCoroutineScope()
 
     Column {
-        TopPanel(chatName, onBackToChats)
+        TopPanel(chatName, historyRefreshRunningState, { }, onBackToChats)
         MessageList(Modifier.weight(10f), lazyListState, messagesList)
         SearchPanel(Modifier.weight(1f)) {
             messagesList.add(it)
@@ -51,19 +64,66 @@ fun DialogFrameImpl(chatName: String, messages: MutableList<String>, onBackToCha
 }
 
 @Composable
-private fun TopPanel(chatName: String, onBackToChats: () -> Unit) {
+private fun TopPanel(
+    chatName: String,
+    historyRefreshRunningState: MutableState<Boolean>,
+    onRefreshHistory: () -> Unit,
+    onBackToChats: () -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val refreshDoneState = remember { mutableStateOf(false) }
     TopAppBar(
-        title = { Text(chatName) },
+        title = {
+            CircularImage(
+                R.drawable.default_user_preview,
+                modifier = Modifier.fillMaxHeight(0.8f)
+            )
+            Spacer(modifier = Modifier.fillMaxWidth(0.05f))
+            Text(chatName)
+        },
         navigationIcon = {
             IconButton(onClick = onBackToChats) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    tint = OrangePrimary
+                )
+            }
+        },
+        actions = {
+            if (historyRefreshRunningState.value) {
+                CircularProgressIndicator()
+                return@TopAppBar
+            }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        historyRefreshRunningState.value = true
+                        onRefreshHistory()
+                        delay(3000)
+                        refreshDoneState.value = true
+                        historyRefreshRunningState.value = false
+                    }
+                }
+            ) {
+                Icon(Icons.Filled.Refresh, contentDescription = null, tint = OrangePrimary)
             }
         }
     )
+    if (refreshDoneState.value) {
+        Toast.makeText(LocalContext.current, "Refreshed", Toast.LENGTH_LONG)
+            .show()
+        refreshDoneState.value = false
+    }
 }
 
 @Composable
-private fun MessageList(modifier: Modifier, state: LazyListState, messages: SnapshotStateList<String>) {
+private fun MessageList(
+    modifier: Modifier,
+    state: LazyListState,
+    messages: SnapshotStateList<String>
+) {
     LazyColumn(modifier = modifier, state = state) {
         items(messages) {
             MessageForm(it, "3:45", MessageType.OWNERS)
@@ -81,14 +141,19 @@ private fun SearchPanel(modifier: Modifier, onMessagesListUpdated: (String) -> U
             value = textState.value,
             onValueChange = { textState.value = it },
             maxLines = 4,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            placeholder = { Text("Message") }
         )
         Button(
             onClick = {
                 onMessagesListUpdated(textState.value.text)
                 textState.value = TextFieldValue()
             },
-            modifier = Modifier.wrapContentWidth(Alignment.End)
+            modifier = Modifier
+                .wrapContentWidth(Alignment.End)
+                .fillMaxHeight()
         ) {
             Text("Send")
         }
@@ -102,6 +167,16 @@ private fun DialogFrameDefaultPreview() {
     DismessTheme(true) {
         Surface(color = BackgroundColor) {
             DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DialogTopPanelDefaultPreview() {
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            TopPanel(chatName = "chatName", mutableStateOf(false), {}) { }
         }
     }
 }
