@@ -11,6 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,14 +32,9 @@ fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> 
     ) {
         Greet()
         Text("Enter service invite")
-        InviteField {
-            inviteFieldState.value = TextFieldValue(it)
-        }
-
+        InviteField(inviteFieldState)
         Text("Enter your login")
-        LoginField {
-            loginFieldState.value = TextFieldValue(it)
-        }
+        LoginField(loginFieldState)
         Button(
             onClick = {
                 if (validate(inviteFieldState.value.text, loginFieldState.value.text)) {
@@ -61,18 +57,18 @@ private fun Greet() {
 }
 
 @Composable
-private fun InviteField(onInviteTextChanged: (String) -> Unit) {
+private fun InviteField(fieldState: MutableState<TextFieldValue>) {
     TextField(
-        TextFieldValue(""),
-        onValueChange = { onInviteTextChanged(it.text) }
+        value = fieldState.value,
+        onValueChange = { fieldState.value = it }
     )
 }
 
 @Composable
-private fun LoginField(onLoginTextChanged: (String) -> Unit) {
+private fun LoginField(fieldState: MutableState<TextFieldValue>) {
     TextField(
-        TextFieldValue(""),
-        onValueChange = { onLoginTextChanged(it.text) }
+        value = fieldState.value,
+        onValueChange = { fieldState.value = it }
     )
 }
 
