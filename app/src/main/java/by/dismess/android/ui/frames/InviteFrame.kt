@@ -58,8 +58,9 @@ fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> 
         ) {
             StatusPanel(runningValidationState, errorMessageState)
         }
-        LoginField(loginFieldState)
-        InviteField(inviteFieldState)
+
+        CustomTextField(loginFieldState, "Enter your login")
+        CustomTextField(inviteFieldState, "Enter service invite")
         Button(
             onClick = {
                 coroutineScope.launch {
@@ -119,16 +120,6 @@ private fun Greet() {
         color = OrangePrimary,
         textDecoration = TextDecoration.LineThrough,
     )
-}
-
-@Composable
-private fun LoginField(fieldState: MutableState<TextFieldValue>) {
-    CustomTextField(fieldState = fieldState, labelText = "Enter your login")
-}
-
-@Composable
-private fun InviteField(fieldState: MutableState<TextFieldValue>) {
-    CustomTextField(fieldState = fieldState, labelText = "Enter service invite")
 }
 
 @Composable
