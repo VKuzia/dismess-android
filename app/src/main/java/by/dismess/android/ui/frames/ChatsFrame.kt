@@ -15,8 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -39,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
+import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.OrangePrimary
@@ -82,16 +81,14 @@ private fun TopPanel(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onAboutTriggered) {
-                Icon(Icons.Filled.Info, contentDescription = null, tint = OrangePrimary)
-            }
+            TopPanelIconButton(onClick = onAboutTriggered, Icons.Filled.Info)
         },
         actions = {
             if (historyRefreshRunningState.value) {
                 CircularProgressIndicator(modifier = Modifier.fillMaxHeight(0.8f))
                 return@TopAppBar
             }
-            IconButton(
+            TopPanelIconButton(
                 onClick = {
                     coroutineScope.launch {
                         historyRefreshRunningState.value = true
@@ -100,13 +97,10 @@ private fun TopPanel(
                         refreshDoneState.value = true
                         historyRefreshRunningState.value = false
                     }
-                }
-            ) {
-                Icon(Icons.Filled.Refresh, contentDescription = null, tint = OrangePrimary)
-            }
-            IconButton(onClick = onFindUser) {
-                Icon(Icons.Filled.Search, contentDescription = null, tint = OrangePrimary)
-            }
+                },
+                Icons.Filled.Refresh
+            )
+            TopPanelIconButton(onClick = onFindUser, imageVector = Icons.Filled.Search)
         }
     )
 

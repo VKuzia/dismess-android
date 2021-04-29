@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,8 +12,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -37,9 +34,9 @@ import by.dismess.android.R
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
 import by.dismess.android.ui.helpers.CircularImage
+import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
-import by.dismess.android.ui.theming.theme.OrangePrimary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
@@ -82,21 +79,14 @@ private fun TopPanel(
             Text(chatName)
         },
         navigationIcon = {
-            IconButton(onClick = onBackToChats) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    tint = OrangePrimary
-                )
-            }
+            TopPanelIconButton(onClick = onBackToChats, imageVector = Icons.Filled.ArrowBack)
         },
         actions = {
             if (historyRefreshRunningState.value) {
                 CircularProgressIndicator()
                 return@TopAppBar
             }
-            IconButton(
+            TopPanelIconButton(
                 onClick = {
                     coroutineScope.launch {
                         historyRefreshRunningState.value = true
@@ -105,10 +95,9 @@ private fun TopPanel(
                         refreshDoneState.value = true
                         historyRefreshRunningState.value = false
                     }
-                }
-            ) {
-                Icon(Icons.Filled.Refresh, contentDescription = null, tint = OrangePrimary)
-            }
+                },
+                Icons.Filled.Refresh
+            )
         }
     )
     if (refreshDoneState.value) {

@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -29,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.CustomTextField
+import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.OrangePrimary
@@ -74,9 +73,7 @@ private fun TopPanel(onReturn: () -> Unit) {
     TopAppBar(
         title = { Text("Find user") },
         navigationIcon = {
-            IconButton(onClick = onReturn) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = null, tint = OrangePrimary)
-            }
+            TopPanelIconButton(onClick = onReturn, imageVector = Icons.Filled.ArrowBack)
         }
     )
 }

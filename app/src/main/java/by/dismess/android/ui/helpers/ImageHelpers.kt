@@ -1,11 +1,16 @@
 package by.dismess.android.ui.helpers
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import by.dismess.android.ui.theming.theme.OrangePrimary
 
 @Composable
 fun CircularImage(drawableId: Int, modifier: Modifier = Modifier) {
@@ -14,4 +19,16 @@ fun CircularImage(drawableId: Int, modifier: Modifier = Modifier) {
         contentDescription = "",
         modifier = modifier.clip(CircleShape),
     )
+}
+
+@Composable
+fun TopPanelIconButton(onClick: () -> Unit, imageVector: ImageVector) {
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = OrangePrimary,
+            modifier = Modifier.fillMaxSize(0.9f)
+        )
+    }
 }
