@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -19,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import by.dismess.android.ui.theming.theme.BackgroundColor
+import by.dismess.android.ui.theming.theme.DismessTheme
 
 @Composable
 fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> Unit) {
@@ -75,7 +76,9 @@ private fun LoginField(fieldState: MutableState<TextFieldValue>) {
 @Preview
 @Composable
 private fun DefaultPreview() {
-    Surface(color = MaterialTheme.colors.background) {
-        InviteFrameImpl({ _: String, _: String -> true }) {}
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            InviteFrameImpl({ _: String, _: String -> true }) {}
+        }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Card
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import by.dismess.android.ui.theming.theme.BackgroundColor
+import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.OTHERS_MESSAGE_COLOR
 import by.dismess.android.ui.theming.theme.OWNERS_MESSAGE_COLOR
 
@@ -82,25 +85,29 @@ private fun getColorForType(type: MessageType): Color {
 @Preview
 @Composable
 private fun MessageFormDefaultPreview() {
-    Column {
-        MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Message",
-            date = "20:45",
-            messageType = MessageType.OWNERS
-        )
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Message",
-            date = "12:33",
-            messageType = MessageType.OTHERS
-        )
-        MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Long " +
-                "Long Long Long Long Long Long Long Long Message",
-            date = "20:45",
-            messageType = MessageType.OWNERS
-        )
-        MessageForm(message = "Short", date = "13:24", messageType = MessageType.OTHERS)
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            Column {
+                MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
+                MessageForm(
+                    message = "Long Long Long Long Long Long Long Long Long Message",
+                    date = "20:45",
+                    messageType = MessageType.OWNERS
+                )
+                MessageForm(
+                    message = "Long Long Long Long Long Long Long Long Long Message",
+                    date = "12:33",
+                    messageType = MessageType.OTHERS
+                )
+                MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
+                MessageForm(
+                    message = "Long Long Long Long Long Long Long Long Long Long " +
+                        "Long Long Long Long Long Long Long Long Message",
+                    date = "20:45",
+                    messageType = MessageType.OWNERS
+                )
+                MessageForm(message = "Short", date = "13:24", messageType = MessageType.OTHERS)
+            }
+        }
     }
 }

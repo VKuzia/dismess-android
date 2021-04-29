@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
+import by.dismess.android.ui.theming.theme.BackgroundColor
+import by.dismess.android.ui.theming.theme.DismessTheme
 
 @Composable
 fun ChatsFrameImpl(
@@ -128,11 +130,19 @@ private fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: 
 @Composable
 private fun ChatsFrameDefaultPreview() {
     val chatList = arrayOf("One", "Two", "Three", "Four")
-    ChatsFrameImpl(chatList, {}) { }
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            ChatsFrameImpl(chatList, {}) { }
+        }
+    }
 }
 
 @Preview
 @Composable
 private fun ChatsFrameAboutDialogPreview() {
-    AboutDialog(id = "12345", showDialog = true) {}
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            AboutDialog(id = "12345", showDialog = true) {}
+        }
+    }
 }

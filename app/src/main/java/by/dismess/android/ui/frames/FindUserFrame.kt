@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -18,9 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import by.dismess.android.ui.theming.theme.BackgroundColor
+import by.dismess.android.ui.theming.theme.DismessTheme
 
 @Composable
-fun FindUserFrameImpl(findUser: (String) -> Boolean, addUser: (String) -> Unit, onReturn: () -> Unit) {
+fun FindUserFrameImpl(
+    findUser: (String) -> Boolean,
+    addUser: (String) -> Unit,
+    onReturn: () -> Unit
+) {
     val lastNameFoundState = remember { mutableStateOf<String?>(null) }
     Column {
         TopPanel(onReturn)
@@ -91,7 +96,9 @@ private fun StatusPanel(
 @Preview
 @Composable
 private fun FindUserFramePreview() {
-    Surface(color = MaterialTheme.colors.background) {
-        FindUserFrameImpl(findUser = { true }, addUser = { }) { }
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            FindUserFrameImpl(findUser = { true }, addUser = { }) { }
+        }
     }
 }

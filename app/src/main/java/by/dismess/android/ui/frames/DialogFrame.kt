@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -28,6 +27,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
+import by.dismess.android.ui.theming.theme.BackgroundColor
+import by.dismess.android.ui.theming.theme.DismessTheme
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
 
@@ -98,7 +99,9 @@ private fun TextPanel(modifier: Modifier, onMessagesListUpdated: (String) -> Uni
 @Composable
 private fun DialogFrameDefaultPreview() {
     val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
-    Surface(color = MaterialTheme.colors.background) {
-        DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
+    DismessTheme(true) {
+        Surface(color = BackgroundColor) {
+            DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
+        }
     }
 }
