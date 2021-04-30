@@ -3,7 +3,6 @@ package by.dismess.android.ui.frames
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,13 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
+import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
@@ -103,8 +102,7 @@ private fun TopPanel(
             TopPanelIconButton(onClick = onFindUser, imageVector = Icons.Filled.Search)
         }
     )
-
-    RefreshDoneToast(refreshDoneState)
+    BooleanToast(refreshDoneState, "Refreshed")
 }
 
 @Composable
@@ -156,18 +154,7 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
             LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", text)
         clipboardManager.setPrimaryClip(clip)
-        Toast.makeText(LocalContext.current, "ID copied to clipboard!", Toast.LENGTH_LONG)
-            .show()
-        copiedState.value = false
-    }
-}
-
-@Composable
-private fun RefreshDoneToast(refreshDoneState: MutableState<Boolean>) {
-    if (refreshDoneState.value) {
-        Toast.makeText(LocalContext.current, "History refresh completed", Toast.LENGTH_LONG)
-            .show()
-        refreshDoneState.value = false
+        BooleanToast(toastShowState = copiedState, text = "ID copied to clipboard!")
     }
 }
 

@@ -1,6 +1,5 @@
 package by.dismess.android.ui.frames
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,12 +26,12 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
+import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.BackgroundColor
@@ -100,11 +99,7 @@ private fun TopPanel(
             )
         }
     )
-    if (refreshDoneState.value) {
-        Toast.makeText(LocalContext.current, "Refreshed", Toast.LENGTH_LONG)
-            .show()
-        refreshDoneState.value = false
-    }
+    BooleanToast(toastShowState = refreshDoneState, text = "Refreshed")
 }
 
 @Composable
