@@ -30,7 +30,7 @@ fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
 @Preview
 @Composable
 private fun TextMapFormDefaultPreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             Column {
                 TextMapForm(key = "hello", value = "it's me")

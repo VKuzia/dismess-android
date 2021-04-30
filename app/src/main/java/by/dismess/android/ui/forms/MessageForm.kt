@@ -85,24 +85,23 @@ private fun getColorForType(type: MessageType): Color {
 @Preview
 @Composable
 private fun MessageFormDefaultPreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             Column {
                 MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
                 MessageForm(
-                    message = "Long Long Long Long Long Long Long Long Long Message",
+                    message = "Long ".repeat(10) + "Message",
                     date = "20:45",
                     messageType = MessageType.OWNERS
                 )
                 MessageForm(
-                    message = "Long Long Long Long Long Long Long Long Long Message",
+                    message = "Long ".repeat(10) + "Message",
                     date = "12:33",
                     messageType = MessageType.OTHERS
                 )
                 MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
                 MessageForm(
-                    message = "Long Long Long Long Long Long Long Long Long Long " +
-                        "Long Long Long Long Long Long Long Long Message",
+                    message = "Long ".repeat(18) + "Message",
                     date = "20:45",
                     messageType = MessageType.OWNERS
                 )

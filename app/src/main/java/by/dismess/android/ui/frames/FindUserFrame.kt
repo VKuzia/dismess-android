@@ -147,7 +147,7 @@ private fun SearchButton(
 @Preview
 @Composable
 private fun FindUserFramePreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             FindUserFrameImpl(findUser = { true }, addUser = { }) { }
         }

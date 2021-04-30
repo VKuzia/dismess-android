@@ -55,7 +55,7 @@ fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = 
 @Preview
 @Composable
 private fun ChatFormDefaultPreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             ChatForm("Some chat", {}, "Last message")
         }

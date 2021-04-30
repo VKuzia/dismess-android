@@ -122,7 +122,7 @@ private fun Greet() {
 @Preview
 @Composable
 private fun DefaultPreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             InviteFrameImpl({ _: String, _: String -> true }) {}
         }

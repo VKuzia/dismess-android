@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            DismessTheme(true) {
+            DismessTheme {
                 Surface(color = BackgroundColor) {
                     Navigate()
                 }

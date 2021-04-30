@@ -148,7 +148,7 @@ private fun SearchPanel(modifier: Modifier, onMessagesListUpdated: (String) -> U
 @Composable
 private fun DialogFrameDefaultPreview() {
     val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
         }
@@ -158,7 +158,7 @@ private fun DialogFrameDefaultPreview() {
 @Preview
 @Composable
 private fun DialogTopPanelDefaultPreview() {
-    DismessTheme(true) {
+    DismessTheme {
         Surface(color = BackgroundColor) {
             TopPanel(chatName = "chatName", mutableStateOf(false), {}) { }
         }
