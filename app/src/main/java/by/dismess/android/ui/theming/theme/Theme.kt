@@ -9,7 +9,7 @@ val palette = darkColors(
     primaryVariant = BluePrimaryVariant,
     secondary = Purple200,
     background = BackgroundColor,
-    surface = BackgroundColor,
+    surface = BackgroundColor
 )
 
 @Composable

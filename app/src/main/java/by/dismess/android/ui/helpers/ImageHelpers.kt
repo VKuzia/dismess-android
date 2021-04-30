@@ -17,7 +17,7 @@ fun CircularImage(drawableId: Int, modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = drawableId),
         contentDescription = "",
-        modifier = modifier.clip(CircleShape),
+        modifier = modifier.clip(CircleShape)
     )
 }
 

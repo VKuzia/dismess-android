@@ -59,7 +59,7 @@ fun FindUserFrameImpl(
             .fillMaxHeight()
             .fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopPanel(onReturn)
         Box(

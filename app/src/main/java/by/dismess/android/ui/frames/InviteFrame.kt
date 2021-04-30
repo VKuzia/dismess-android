@@ -89,7 +89,7 @@ private fun Greet() {
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.subtitle1,
         color = palette.primary,
-        textDecoration = TextDecoration.LineThrough,
+        textDecoration = TextDecoration.LineThrough
     )
 }
 
