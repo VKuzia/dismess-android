@@ -13,7 +13,7 @@ val palette = darkColors(
 )
 
 @Composable
-fun DismessTheme(content: @Composable () -> Unit) {
+fun DismessTheme(content: @Composable() () -> Unit) {
     MaterialTheme(
         colors = palette,
         shapes = Shapes,

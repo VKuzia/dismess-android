@@ -118,7 +118,7 @@ private fun StatusPanel(
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Text(
                 "Do you want to add this user to the chats list?",
-                style = MaterialTheme.typography.subtitle1,
+                style = MaterialTheme.typography.subtitle1
             )
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Button(
