@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 
 @Composable
-fun CustomTextField(
+fun LineTextField(
     fieldState: MutableState<TextFieldValue>,
     labelText: String,
     modifier: Modifier = Modifier

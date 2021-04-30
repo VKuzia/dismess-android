@@ -31,8 +31,7 @@ fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = 
             .background(color = palette.background)
     ) {
         Row(
-            modifier = Modifier
-                .padding(8.dp),
+            modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             CircularImage(R.drawable.default_user_preview)

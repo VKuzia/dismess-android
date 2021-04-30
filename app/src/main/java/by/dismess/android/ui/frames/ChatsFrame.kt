@@ -84,6 +84,7 @@ private fun TopPanel(
             if (!historyRefreshRunningState.value) {
                 TopPanelIconButton(
                     onClick = {
+                        // Demo. We emulate history refreshing
                         coroutineScope.launch {
                             historyRefreshRunningState.value = true
                             onRefreshHistory()
@@ -130,9 +131,7 @@ private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Button(
-                            onClick = {
-                                copiedState.value = true
-                            },
+                            onClick = { copiedState.value = true },
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("Copy ID")

@@ -1,5 +1,6 @@
 package by.dismess.android.ui.frames
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,10 +27,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.ui.helpers.CircularImage
-import by.dismess.android.ui.helpers.CustomTextField
+import by.dismess.android.ui.helpers.LineTextField
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,7 +44,16 @@ fun FindUserFrameImpl(
     val searchRunningState = remember { mutableStateOf(false) }
     val lastNameFoundState = remember { mutableStateOf<String?>(null) }
     val usernameFieldState = remember { mutableStateOf(TextFieldValue()) }
-
+    val coroutineScope = rememberCoroutineScope()
+    val onSearchStarted = {
+        startSearching(
+            searchRunningState,
+            usernameFieldState,
+            lastNameFoundState,
+            coroutineScope,
+            findUser
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -58,11 +69,14 @@ fun FindUserFrameImpl(
         ) {
             StatusPanel(searchRunningState, lastNameFoundState, addUser, onReturn)
         }
-        CustomTextField(fieldState = usernameFieldState, labelText = "Enter username to search")
+        LineTextField(fieldState = usernameFieldState, labelText = "Enter username to search")
         Spacer(modifier = Modifier.weight(0.1f))
-        SearchButton(searchRunningState, usernameFieldState, lastNameFoundState, findUser)
+        Button(onClick = onSearchStarted) { Text("Search") }
         Spacer(modifier = Modifier.weight(0.3f))
-        CircularImage(R.drawable.search_icon)
+        CircularImage(
+            R.drawable.search_icon,
+            modifier = Modifier.clickable(onClick = onSearchStarted)
+        )
         Spacer(modifier = Modifier.weight(0.3f))
     }
 }
@@ -117,30 +131,25 @@ private fun StatusPanel(
     }
 }
 
-@Composable
-private fun SearchButton(
+private fun startSearching(
     searchRunningState: MutableState<Boolean>,
     usernameFieldState: MutableState<TextFieldValue>,
     lastNameFoundState: MutableState<String?>,
+    coroutineScope: CoroutineScope,
     findUser: (String) -> Boolean
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
-    Button(
-        onClick = {
-            coroutineScope.launch {
-                searchRunningState.value = true
-                delay(2000)
-                val searchResult = findUser(usernameFieldState.value.text)
-                searchRunningState.value = false
-                if (searchResult) {
-                    lastNameFoundState.value = usernameFieldState.value.text
-                } else {
-                    lastNameFoundState.value = null
-                }
-            }
+    // Demo. We emulate searching
+    coroutineScope.launch {
+        searchRunningState.value = true
+        delay(2000)
+        val searchResult = findUser(usernameFieldState.value.text)
+        searchRunningState.value = false
+        if (searchResult) {
+            lastNameFoundState.value = usernameFieldState.value.text
+        } else {
+            lastNameFoundState.value = null
         }
-    ) { Text("Search") }
+    }
 }
 
 @Preview

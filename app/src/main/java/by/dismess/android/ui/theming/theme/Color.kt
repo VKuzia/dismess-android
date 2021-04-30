@@ -7,7 +7,6 @@ val Purple200 = Color(0xFFBB86FC)
 val BluePrimaryVariant = Color(0xFF5632C0)
 val OrangePrimary = Color(0xFFFFAA1A)
 val BackgroundColor = Color(0xFF3C3F41)
-val BackgroundColorDarker = Color(0xFF303335)
 
 val ownersMessageColor = Color(0xFF254972)
 val othersMessageColor = Color(0xFF272727)

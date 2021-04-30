@@ -23,7 +23,7 @@ import by.dismess.android.ui.theming.theme.ownersMessageColor
 import by.dismess.android.ui.theming.theme.palette
 
 enum class MessageType {
-    OWNERS, OTHERS, PROGRAMS,
+    OWNERS, OTHERS,
 }
 
 @Composable
@@ -35,10 +35,7 @@ fun MessageForm(message: String, date: String, messageType: MessageType) {
             .fillMaxWidth()
             .wrapContentWidth(getAlignmentForType(messageType))
     ) {
-        Row(
-            modifier = Modifier
-                .background(getColorForType(messageType))
-        ) {
+        Row(modifier = Modifier.background(getColorForType(messageType))) {
             Text(
                 message,
                 modifier = Modifier
@@ -64,9 +61,6 @@ private fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
         MessageType.OTHERS -> {
             Alignment.Start
         }
-        else -> {
-            Alignment.CenterHorizontally
-        }
     }
 }
 
@@ -78,7 +72,6 @@ private fun getColorForType(type: MessageType): Color {
         MessageType.OTHERS -> {
             othersMessageColor
         }
-        else -> Color.White
     }
 }
 
@@ -99,13 +92,12 @@ private fun MessageFormDefaultPreview() {
                     date = "12:33",
                     messageType = MessageType.OTHERS
                 )
-                MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
+                MessageForm(message = "Short", date = "13:22", messageType = MessageType.OTHERS)
                 MessageForm(
                     message = "Long ".repeat(18) + "Message",
                     date = "20:45",
                     messageType = MessageType.OWNERS
                 )
-                MessageForm(message = "Short", date = "13:24", messageType = MessageType.OTHERS)
             }
         }
     }

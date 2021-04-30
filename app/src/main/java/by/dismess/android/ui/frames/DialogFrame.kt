@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -70,10 +71,7 @@ private fun TopPanel(
     val refreshDoneState = remember { mutableStateOf(false) }
     TopAppBar(
         title = {
-            CircularImage(
-                R.drawable.default_user_preview,
-                modifier = Modifier.fillMaxHeight(0.8f)
-            )
+            CircularImage(R.drawable.default_user_preview, modifier = Modifier.fillMaxHeight(0.8f))
             Spacer(modifier = Modifier.fillMaxWidth(0.05f))
             Text(chatName)
         },
@@ -88,6 +86,7 @@ private fun TopPanel(
             TopPanelIconButton(
                 onClick = {
                     coroutineScope.launch {
+                        // Demo. We emulate history refreshing
                         historyRefreshRunningState.value = true
                         onRefreshHistory()
                         delay(3000)
@@ -99,7 +98,7 @@ private fun TopPanel(
             )
         }
     )
-    BooleanToast(toastShowState = refreshDoneState, text = "Refreshed")
+    BooleanToast(refreshDoneState, "Refreshed")
 }
 
 @Composable
@@ -125,9 +124,7 @@ private fun SearchPanel(modifier: Modifier, onMessagesListUpdated: (String) -> U
             value = textState.value,
             onValueChange = { textState.value = it },
             maxLines = 4,
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
+            modifier = modifier.fillMaxSize(),
             placeholder = { Text("Message") }
         )
         Button(
