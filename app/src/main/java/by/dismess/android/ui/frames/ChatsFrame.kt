@@ -6,7 +6,6 @@ import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,9 +36,8 @@ import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
 import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.TopPanelIconButton
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
-import by.dismess.android.ui.theming.theme.OrangePrimary
+import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,7 +53,7 @@ fun ChatsFrameImpl(
         TopPanel({ setShowDialog(true) }, onRefreshHistory, onFindUser)
         LazyColumn {
             items(chatList) {
-                Divider(color = OrangePrimary, thickness = 1.dp)
+                Divider(color = palette.primary, thickness = 1.dp)
                 ChatForm(it, onDialogStart)
             }
         }
@@ -83,22 +81,22 @@ private fun TopPanel(
             TopPanelIconButton(onClick = onAboutTriggered, Icons.Filled.Info)
         },
         actions = {
-            if (historyRefreshRunningState.value) {
-                CircularProgressIndicator(modifier = Modifier.fillMaxHeight(0.8f))
-                return@TopAppBar
+            if (!historyRefreshRunningState.value) {
+                TopPanelIconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            historyRefreshRunningState.value = true
+                            onRefreshHistory()
+                            delay(3000)
+                            refreshDoneState.value = true
+                            historyRefreshRunningState.value = false
+                        }
+                    },
+                    Icons.Filled.Refresh
+                )
+            } else {
+                CircularProgressIndicator()
             }
-            TopPanelIconButton(
-                onClick = {
-                    coroutineScope.launch {
-                        historyRefreshRunningState.value = true
-                        onRefreshHistory()
-                        delay(3000)
-                        refreshDoneState.value = true
-                        historyRefreshRunningState.value = false
-                    }
-                },
-                Icons.Filled.Refresh
-            )
             TopPanelIconButton(onClick = onFindUser, imageVector = Icons.Filled.Search)
         }
     )
@@ -111,7 +109,7 @@ private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean
     if (showDialog) {
         Dialog(onDismissRequest = { setShowDialog(false) }) {
             Surface(
-                color = BackgroundColor,
+                color = palette.surface,
                 shape = RoundedCornerShape(5)
             ) {
                 Column(
@@ -163,7 +161,7 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
 private fun ChatsFrameDefaultPreview() {
     val chatList = arrayOf("One", "Two", "Three", "Four")
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             ChatsFrameImpl(chatList, {}, {}) { }
         }
     }
@@ -173,7 +171,7 @@ private fun ChatsFrameDefaultPreview() {
 @Composable
 private fun ChatsFrameAboutDialogPreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             AboutDialog(id = "12345", showDialog = true) {}
         }
     }

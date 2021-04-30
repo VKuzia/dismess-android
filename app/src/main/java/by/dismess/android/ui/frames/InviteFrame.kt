@@ -24,9 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.ui.helpers.CustomTextField
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
-import by.dismess.android.ui.theming.theme.OrangePrimary
+import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -114,7 +113,7 @@ private fun Greet() {
         "Best distributed messenger of all time",
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.subtitle1,
-        color = OrangePrimary,
+        color = palette.primary,
         textDecoration = TextDecoration.LineThrough,
     )
 }
@@ -123,7 +122,7 @@ private fun Greet() {
 @Composable
 private fun DefaultPreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             InviteFrameImpl({ _: String, _: String -> true }) {}
         }
     }

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import by.dismess.android.ui.theming.theme.OrangePrimary
+import by.dismess.android.ui.theming.theme.palette
 
 @Composable
 fun CircularImage(drawableId: Int, modifier: Modifier = Modifier) {
@@ -27,7 +27,7 @@ fun TopPanelIconButton(onClick: () -> Unit, imageVector: ImageVector) {
         Icon(
             imageVector = imageVector,
             contentDescription = null,
-            tint = OrangePrimary,
+            tint = palette.primary,
             modifier = Modifier.fillMaxSize(0.9f)
         )
     }

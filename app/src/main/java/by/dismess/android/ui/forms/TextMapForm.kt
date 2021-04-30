@@ -12,8 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.palette
 
 @Composable
 fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
@@ -31,7 +31,7 @@ fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
 @Composable
 private fun TextMapFormDefaultPreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             Column {
                 TextMapForm(key = "hello", value = "it's me")
                 TextMapForm(key = "ip", value = "127.0.0.1")

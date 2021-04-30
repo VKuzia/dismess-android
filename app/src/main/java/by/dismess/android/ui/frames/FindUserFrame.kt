@@ -28,9 +28,8 @@ import by.dismess.android.R
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.CustomTextField
 import by.dismess.android.ui.helpers.TopPanelIconButton
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
-import by.dismess.android.ui.theming.theme.OrangePrimary
+import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -100,7 +99,7 @@ private fun StatusPanel(
             Text(
                 "${lastFoundUsername.value}",
                 style = MaterialTheme.typography.h5,
-                color = OrangePrimary
+                color = palette.primary
             )
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Text(
@@ -148,7 +147,7 @@ private fun SearchButton(
 @Composable
 private fun FindUserFramePreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             FindUserFrameImpl(findUser = { true }, addUser = { }) { }
         }
     }

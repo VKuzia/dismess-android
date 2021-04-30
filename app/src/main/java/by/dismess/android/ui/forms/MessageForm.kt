@@ -17,10 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
-import by.dismess.android.ui.theming.theme.OTHERS_MESSAGE_COLOR
-import by.dismess.android.ui.theming.theme.OWNERS_MESSAGE_COLOR
+import by.dismess.android.ui.theming.theme.othersMessageColor
+import by.dismess.android.ui.theming.theme.ownersMessageColor
+import by.dismess.android.ui.theming.theme.palette
 
 enum class MessageType {
     OWNERS, OTHERS, PROGRAMS,
@@ -73,10 +73,10 @@ private fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
 private fun getColorForType(type: MessageType): Color {
     return when (type) {
         MessageType.OWNERS -> {
-            OWNERS_MESSAGE_COLOR
+            ownersMessageColor
         }
         MessageType.OTHERS -> {
-            OTHERS_MESSAGE_COLOR
+            othersMessageColor
         }
         else -> Color.White
     }
@@ -86,7 +86,7 @@ private fun getColorForType(type: MessageType): Color {
 @Composable
 private fun MessageFormDefaultPreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             Column {
                 MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
                 MessageForm(

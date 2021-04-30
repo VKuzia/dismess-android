@@ -34,8 +34,8 @@ import by.dismess.android.ui.forms.MessageType
 import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.TopPanelIconButton
-import by.dismess.android.ui.theming.theme.BackgroundColor
 import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
@@ -149,7 +149,7 @@ private fun SearchPanel(modifier: Modifier, onMessagesListUpdated: (String) -> U
 private fun DialogFrameDefaultPreview() {
     val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
         }
     }
@@ -159,7 +159,7 @@ private fun DialogFrameDefaultPreview() {
 @Composable
 private fun DialogTopPanelDefaultPreview() {
     DismessTheme {
-        Surface(color = BackgroundColor) {
+        Surface(color = palette.surface) {
             TopPanel(chatName = "chatName", mutableStateOf(false), {}) { }
         }
     }
