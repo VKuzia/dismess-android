@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,10 +36,14 @@ import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
 
 @Composable
-fun ChatsFrameImpl(chatList: Array<String>, onDialogStart: (String) -> Unit) {
+fun ChatsFrameImpl(
+    chatList: Array<String>,
+    onFindUser: () -> Unit,
+    onDialogStart: (String) -> Unit
+) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Column {
-        TopPanel { setShowDialog(true) }
+        TopPanel({ setShowDialog(true) }, onFindUser)
         LazyColumn {
             items(chatList) {
                 ChatForm(it, onDialogStart)
@@ -49,12 +54,17 @@ fun ChatsFrameImpl(chatList: Array<String>, onDialogStart: (String) -> Unit) {
 }
 
 @Composable
-private fun TopPanel(onAboutTriggered: () -> Unit) {
+private fun TopPanel(onAboutTriggered: () -> Unit, onFindUser: () -> Unit) {
     TopAppBar(
         title = { Text("Dismess") },
         navigationIcon = {
             IconButton(onClick = onAboutTriggered) {
                 Icon(Icons.Filled.Info, contentDescription = null)
+            }
+        },
+        actions = {
+            IconButton(onClick = onFindUser) {
+                Icon(Icons.Filled.Search, contentDescription = null)
             }
         }
     )
@@ -118,7 +128,7 @@ private fun CopyToClipboard(text: String, copiedState: Boolean, setCopiedState: 
 @Composable
 private fun ChatsFrameDefaultPreview() {
     val chatList = arrayOf("One", "Two", "Three", "Four")
-    ChatsFrameImpl(chatList) { }
+    ChatsFrameImpl(chatList, {}) { }
 }
 
 @Preview
