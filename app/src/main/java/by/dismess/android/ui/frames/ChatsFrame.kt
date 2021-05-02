@@ -158,7 +158,7 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
 @Preview
 @Composable
 private fun ChatsFrameDefaultPreview() {
-    val chatList = arrayOf("One", "Two", "Three", "Four")
+    val chatList = arrayOf("One", "Two", "Three", "Four", "Five")
     DismessTheme {
         Surface(color = palette.surface) {
             ChatsFrameImpl(chatList, {}, {}) { }
