@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Card
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,11 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import by.dismess.android.ui.theming.theme.OTHERS_MESSAGE_COLOR
-import by.dismess.android.ui.theming.theme.OWNERS_MESSAGE_COLOR
+import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.othersMessageColor
+import by.dismess.android.ui.theming.theme.ownersMessageColor
+import by.dismess.android.ui.theming.theme.palette
 
 enum class MessageType {
-    OWNERS, OTHERS, PROGRAMS,
+    OWNERS, OTHERS,
 }
 
 @Composable
@@ -32,10 +35,7 @@ fun MessageForm(message: String, date: String, messageType: MessageType) {
             .fillMaxWidth()
             .wrapContentWidth(getAlignmentForType(messageType))
     ) {
-        Row(
-            modifier = Modifier
-                .background(getColorForType(messageType))
-        ) {
+        Row(modifier = Modifier.background(getColorForType(messageType))) {
             Text(
                 message,
                 modifier = Modifier
@@ -61,46 +61,44 @@ private fun getAlignmentForType(type: MessageType): Alignment.Horizontal {
         MessageType.OTHERS -> {
             Alignment.Start
         }
-        else -> {
-            Alignment.CenterHorizontally
-        }
     }
 }
 
 private fun getColorForType(type: MessageType): Color {
     return when (type) {
         MessageType.OWNERS -> {
-            OWNERS_MESSAGE_COLOR
+            ownersMessageColor
         }
         MessageType.OTHERS -> {
-            OTHERS_MESSAGE_COLOR
+            othersMessageColor
         }
-        else -> Color.White
     }
 }
 
 @Preview
 @Composable
 private fun MessageFormDefaultPreview() {
-    Column {
-        MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Message",
-            date = "20:45",
-            messageType = MessageType.OWNERS
-        )
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Message",
-            date = "12:33",
-            messageType = MessageType.OTHERS
-        )
-        MessageForm(message = "Mee", date = "13:22", messageType = MessageType.OTHERS)
-        MessageForm(
-            message = "Long Long Long Long Long Long Long Long Long Long " +
-                "Long Long Long Long Long Long Long Long Message",
-            date = "20:45",
-            messageType = MessageType.OWNERS
-        )
-        MessageForm(message = "Short", date = "13:24", messageType = MessageType.OTHERS)
+    DismessTheme {
+        Surface(color = palette.surface) {
+            Column {
+                MessageForm(message = "Message", date = "20:44", messageType = MessageType.OWNERS)
+                MessageForm(
+                    message = "Long ".repeat(10) + "Message",
+                    date = "20:45",
+                    messageType = MessageType.OWNERS
+                )
+                MessageForm(
+                    message = "Long ".repeat(10) + "Message",
+                    date = "12:33",
+                    messageType = MessageType.OTHERS
+                )
+                MessageForm(message = "Short", date = "13:22", messageType = MessageType.OTHERS)
+                MessageForm(
+                    message = "Long ".repeat(18) + "Message",
+                    date = "20:45",
+                    messageType = MessageType.OWNERS
+                )
+            }
+        }
     }
 }

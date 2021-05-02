@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import by.dismess.android.ui.theming.theme.DismessTheme
+import by.dismess.android.ui.theming.theme.palette
 
 @Composable
 fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
@@ -27,8 +30,12 @@ fun TextMapForm(key: String, value: String, padding: Dp = 8.dp) {
 @Preview
 @Composable
 private fun TextMapFormDefaultPreview() {
-    Column {
-        TextMapForm(key = "hello", value = "it's me")
-        TextMapForm(key = "ip", value = "127.0.0.1")
+    DismessTheme {
+        Surface(color = palette.surface) {
+            Column {
+                TextMapForm(key = "hello", value = "it's me")
+                TextMapForm(key = "ip", value = "127.0.0.1")
+            }
+        }
     }
 }

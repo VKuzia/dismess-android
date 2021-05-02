@@ -27,24 +27,22 @@ fun Navigate() {
 
 @Composable
 fun InviteFrame(navController: NavController) {
+    // Demo
     InviteFrameImpl({ _: String, _: String -> true }) { navController.navigate("ChatsFrame") }
 }
 
-private val exampleOfChatsList = Array(30) { it.toString() }
+private val exampleOfChatsList = Array(30) { it.toString() } // Demo
 
 @Composable
 private fun ChatsFrame(navController: NavController) {
     ChatsFrameImpl(
-        exampleOfChatsList,
-        {
-            navController.navigate("FindUserFrame")
-        }
+        exampleOfChatsList, {}, { navController.navigate("FindUserFrame") }
     ) { chosenChatName ->
         navController.navigate("DialogFrame/$chosenChatName")
     }
 }
 
-private val exampleOfMessages = MutableList(5) { it.toString() }
+private val exampleOfMessages = MutableList(5) { it.toString() } // Demo
 
 @Composable
 private fun DialogFrame(navController: NavController, chatName: String?) {
