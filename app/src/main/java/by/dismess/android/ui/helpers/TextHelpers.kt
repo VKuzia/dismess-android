@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -16,16 +17,18 @@ import androidx.compose.ui.text.input.TextFieldValue
 fun LineTextField(
     fieldState: MutableState<TextFieldValue>,
     labelText: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    errorState: MutableState<String?> = mutableStateOf(null)
 ) {
     val localFocusManager = LocalFocusManager.current
     TextField(
         value = fieldState.value,
         onValueChange = { fieldState.value = it },
-        label = { Text(labelText) },
+        label = { Text(if (errorState.value != null) errorState.value!! else labelText) },
         singleLine = true,
         keyboardActions = KeyboardActions(onDone = { localFocusManager.clearFocus() }),
-        modifier = modifier.fillMaxWidth(0.7f)
+        modifier = modifier.fillMaxWidth(0.7f),
+        isError = errorState.value != null
     )
 }
 

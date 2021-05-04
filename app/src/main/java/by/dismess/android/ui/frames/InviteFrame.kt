@@ -23,22 +23,28 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import by.dismess.android.bullshit.get
+import by.dismess.android.ui.controllers.InviteFrameController
+import by.dismess.android.ui.controllers.interfaces.InviteFrameInterface
 import by.dismess.android.ui.helpers.LineTextField
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
-private const val someValidationError = "Validation Error :(\nTry again please" // Demo
+private const val INVALID_DATA_STATUS_MESSAGE = "Invalid input data.\n Please, try again."
+private const val ENTER_ERROR = "Couldn't enter the system due to unsolvable reasons."
+private const val INVALID_TEXT_MESSAGE = "Invalid Field"
 
 @Composable
-fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> Unit) {
-    val inviteFieldState = remember { mutableStateOf(TextFieldValue()) }
+fun InviteFrameImpl(controller: InviteFrameInterface = get(), navigateToChats: () -> Unit) {
     val loginFieldState = remember { mutableStateOf(TextFieldValue()) }
+    val inviteFieldState = remember { mutableStateOf(TextFieldValue()) }
+    val loginErrorState = remember { mutableStateOf<String?>(null) }
+    val inviteErrorState = remember { mutableStateOf<String?>(null) }
+    val statusState = remember { mutableStateOf<String?>(null) }
     val runningValidationState = remember { mutableStateOf(false) }
-    val errorMessageState = remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -54,21 +60,30 @@ fun InviteFrameImpl(validate: (String, String) -> Boolean, onValidInvite: () -> 
                 .fillMaxHeight(0.2f)
                 .wrapContentSize()
         ) {
-            StatusPanel(runningValidationState, errorMessageState)
+            StatusPanel(runningValidationState, statusState)
         }
-        LineTextField(loginFieldState, "Enter your login")
-        LineTextField(inviteFieldState, "Enter service invite")
+        LineTextField(loginFieldState, "Enter your login", errorState = loginErrorState)
+        LineTextField(inviteFieldState, "Enter service invite", errorState = inviteErrorState)
         Button(
             onClick = {
-                startValidation(
-                    runningValidationState,
-                    errorMessageState,
-                    loginFieldState.value.text,
-                    inviteFieldState.value.text,
-                    coroutineScope,
-                    validate,
-                    onValidInvite
-                )
+                val loginValidationResult =
+                    validateTextField(loginFieldState, loginErrorState, controller::isValidLogin)
+                val inviteValidationResult =
+                    validateTextField(inviteFieldState, inviteErrorState, controller::isValidInvite)
+                if (!loginValidationResult || !inviteValidationResult) {
+                    statusState.value = INVALID_DATA_STATUS_MESSAGE
+                } else {
+//                    statusState.value = null
+                    tryEnter(
+                        controller,
+                        runningValidationState,
+                        statusState,
+                        loginFieldState.value.text,
+                        inviteFieldState.value.text,
+                        coroutineScope,
+                        navigateToChats
+                    )
+                }
             }
         ) {
             Text("Proceed")
@@ -96,43 +111,55 @@ private fun Greet() {
 @Composable
 fun StatusPanel(
     runningValidationState: MutableState<Boolean>,
-    errorMessageState: MutableState<String?>
+    statusState: MutableState<String?>
 ) {
     if (runningValidationState.value) {
         CircularProgressIndicator()
-    } else if (errorMessageState.value != null) {
-        Text(
-            text = errorMessageState.value!!,
-            color = MaterialTheme.colors.error,
-            style = MaterialTheme.typography.h5
-        )
+    } else {
+        if (statusState.value != null) {
+            Text(
+                text = statusState.value!!,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.h5,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
-private fun startValidation(
+private fun validateTextField(
+    fieldState: MutableState<TextFieldValue>,
+    errorState: MutableState<String?>,
+    validator: (String) -> Boolean
+): Boolean {
+    return if (!validator(fieldState.value.text)) {
+        errorState.value = INVALID_TEXT_MESSAGE
+        true
+    } else {
+        errorState.value = null
+        false
+    }
+}
+
+private fun tryEnter(
+    controller: InviteFrameInterface,
     runningValidationState: MutableState<Boolean>,
-    errorMessageState: MutableState<String?>,
+    statusState: MutableState<String?>,
     login: String,
     invite: String,
     coroutineScope: CoroutineScope,
-    validate: (String, String) -> Boolean,
-    onValidInvite: () -> Unit
+    onEntered: () -> Unit
 ) {
     // Demo we emulate hard work of validation.
     coroutineScope.launch {
         runningValidationState.value = true
-        var validationResult =
-            validate(login, invite)
-        delay(2000)
-        if (Random.nextBoolean()) {
-            validationResult = false
-        }
+        delay(1000)
+        val result = controller.tryEnterSystem(login, invite)
         runningValidationState.value = false
-        if (validationResult) {
-            errorMessageState.value = null
-            onValidInvite()
+        if (result) {
+            onEntered()
         } else {
-            errorMessageState.value = someValidationError
+            statusState.value = ENTER_ERROR
         }
     }
 }
@@ -142,7 +169,7 @@ private fun startValidation(
 private fun DefaultPreview() {
     DismessTheme {
         Surface(color = palette.surface) {
-            InviteFrameImpl({ _: String, _: String -> true }) {}
+            InviteFrameImpl(InviteFrameController()) {}
         }
     }
 }
