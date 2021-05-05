@@ -1,4 +1,4 @@
-package by.dismess.android.bullshit
+package by.dismess.android.lib
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

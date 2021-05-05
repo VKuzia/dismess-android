@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import by.dismess.android.bullshit.get
+import by.dismess.android.lib.get
 import by.dismess.android.ui.controllers.InviteFrameController
 import by.dismess.android.ui.controllers.interfaces.InviteFrameInterface
 import by.dismess.android.ui.helpers.LineTextField
@@ -134,10 +134,10 @@ private fun validateTextField(
 ): Boolean {
     return if (!validator(fieldState.value.text)) {
         errorState.value = INVALID_TEXT_MESSAGE
-        true
+        false
     } else {
         errorState.value = null
-        false
+        true
     }
 }
 
@@ -150,10 +150,10 @@ private fun tryEnter(
     coroutineScope: CoroutineScope,
     onEntered: () -> Unit
 ) {
-    // Demo we emulate hard work of validation.
+    // Demo. We emulate hard work of validation.
     coroutineScope.launch {
         runningValidationState.value = true
-        delay(1000)
+        delay(2000)
         val result = controller.tryEnterSystem(login, invite)
         runningValidationState.value = false
         if (result) {
