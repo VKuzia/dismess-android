@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.lib.get
+import by.dismess.android.service.AppInfo
 import by.dismess.android.service.DemoStorage
 import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.ChatsFrameController
@@ -174,17 +175,7 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
 private fun ChatsFrameDefaultPreview() {
     DismessTheme {
         Surface(color = palette.surface) {
-            ChatsFrameImpl({}, ChatsFrameController(DemoStorage())) { }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ChatsFrameAboutDialogPreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-            AboutDialog(version = "0.0.1", id = "12345", showDialog = true) {}
+            ChatsFrameImpl({}, ChatsFrameController(DemoStorage(), AppInfo("0.0.1"))) { }
         }
     }
 }

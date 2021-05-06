@@ -19,6 +19,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.lib.get
+import by.dismess.android.service.DemoStorage
+import by.dismess.android.service.model.Chat
+import by.dismess.android.ui.controllers.DialogFrameController
 import by.dismess.android.ui.controllers.interfaces.DialogFrameInterface
 import by.dismess.android.ui.forms.MessageForm
 import by.dismess.android.ui.forms.MessageType
@@ -43,17 +47,17 @@ import by.dismess.core.model.Message
 import by.dismess.core.model.UserID
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 import java.text.SimpleDateFormat
-import java.util.*
-import androidx.compose.runtime.Composable as Composable
+import java.util.Locale
 
 @Composable
 fun DialogFrameImpl(controller: DialogFrameInterface = get(), onBackToChats: () -> Unit) {
-    val messagesList = remember { controller.getMessages().toMutableStateList() }
+    val messagesList = controller.getMessages().toMutableStateList()
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val lazyListState = remember { LazyListState() }
     val coroutineScope = rememberCoroutineScope()
-
+    controller.registerMessagesListener { message -> messagesList.add(message) }
     Column {
         TopPanel(
             historyRefreshRunningState,
@@ -62,8 +66,8 @@ fun DialogFrameImpl(controller: DialogFrameInterface = get(), onBackToChats: () 
             onBackToChats
         )
         MessageList(Modifier.weight(10f), lazyListState, messagesList, controller.getOwnId())
-        TextPanel(Modifier.weight(1f), controller.getOwnId()) {
-            messagesList.add(it)
+        TextPanel(Modifier.weight(1f)) {
+            controller.addMessage(it)
             coroutineScope.launch {
                 lazyListState.animateScrollToItem(messagesList.lastIndex)
             }
@@ -91,7 +95,7 @@ private fun MessageList(
 }
 
 @Composable
-private fun TextPanel(modifier: Modifier, ownId: UserID, onMessagesListUpdated: (Message) -> Unit) {
+private fun TextPanel(modifier: Modifier, sendMessage: (String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
     Row(modifier = modifier.fillMaxWidth()) {
         TextField(
@@ -103,7 +107,7 @@ private fun TextPanel(modifier: Modifier, ownId: UserID, onMessagesListUpdated: 
         )
         Button(
             onClick = {
-                onMessagesListUpdated(Message(author = ownId, text = textState.value.text))
+                sendMessage(textState.value.text)
                 textState.value = TextFieldValue()
             },
             modifier = Modifier
@@ -159,20 +163,14 @@ private fun TopPanel(
 @Preview
 @Composable
 private fun DialogFrameDefaultPreview() {
-    val messagesList = mutableListOf("Hello", "Hi", "Goodbye", "Chao")
     DismessTheme {
         Surface(color = palette.surface) {
-//            DialogFrameImpl(chatName = "ChatName", messages = messagesList) { }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun DialogTopPanelDefaultPreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-//            TopPanel(chatName = "chatName", mutableStateOf(false), {}) { }
+            DialogFrameImpl(
+                DialogFrameController(
+                    DemoStorage(),
+                    Chat("1", UserID(BigInteger.ZERO))
+                )
+            ) { }
         }
     }
 }

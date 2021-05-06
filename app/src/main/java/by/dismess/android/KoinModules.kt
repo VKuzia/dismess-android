@@ -27,7 +27,7 @@ val coreImplModule = module {
 
 val controllersModule = module {
     single<ChatsFrameInterface> { ChatsFrameController(get(), get()) }
-    single<DialogFrameInterface> { (chat: Chat) -> DialogFrameController(get(), chat) }
+    factory<DialogFrameInterface> { (chat: Chat) -> DialogFrameController(get(), chat) }
     single<FindUserFrameInterface> { FindUserFrameController() }
     single<InviteFrameInterface> { InviteFrameController() }
 }

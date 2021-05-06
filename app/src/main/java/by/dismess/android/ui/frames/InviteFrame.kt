@@ -73,7 +73,6 @@ fun InviteFrameImpl(controller: InviteFrameInterface = get(), navigateToChats: (
                 if (!loginValidationResult || !inviteValidationResult) {
                     statusState.value = INVALID_DATA_STATUS_MESSAGE
                 } else {
-//                    statusState.value = null
                     tryEnter(
                         controller,
                         runningValidationState,

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.lib.get
+import by.dismess.android.service.DemoStorage
 import by.dismess.android.service.model.User
 import by.dismess.android.ui.controllers.FindUserFrameController
 import by.dismess.android.ui.controllers.interfaces.FindUserFrameInterface
@@ -155,7 +156,7 @@ private fun startSearching(
 private fun FindUserFramePreview() {
     DismessTheme {
         Surface(color = palette.surface) {
-            FindUserFrameImpl(FindUserFrameController()) { }
+            FindUserFrameImpl(FindUserFrameController(DemoStorage())) { }
         }
     }
 }
