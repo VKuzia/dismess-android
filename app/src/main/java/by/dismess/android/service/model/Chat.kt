@@ -1,4 +1,4 @@
-package by.dismess.android.service
+package by.dismess.android.service.model
 
 import by.dismess.core.model.Message
 import by.dismess.core.model.UserID

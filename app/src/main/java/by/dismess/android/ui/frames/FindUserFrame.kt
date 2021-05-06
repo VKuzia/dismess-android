@@ -26,6 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
+import by.dismess.android.lib.get
+import by.dismess.android.service.model.User
+import by.dismess.android.ui.controllers.FindUserFrameController
+import by.dismess.android.ui.controllers.interfaces.FindUserFrameInterface
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.LineTextField
 import by.dismess.android.ui.helpers.TopPanelIconButton
@@ -37,21 +41,20 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun FindUserFrameImpl(
-    findUser: (String) -> Boolean,
-    addUser: (String) -> Unit,
+    controller: FindUserFrameInterface = get(),
     onReturn: () -> Unit
 ) {
     val searchRunningState = remember { mutableStateOf(false) }
-    val lastNameFoundState = remember { mutableStateOf<String?>(null) }
+    val lastUserFound = remember { mutableStateOf<User?>(null) }
     val usernameFieldState = remember { mutableStateOf(TextFieldValue()) }
     val coroutineScope = rememberCoroutineScope()
     val onSearchStarted = {
         startSearching(
             searchRunningState,
             usernameFieldState,
-            lastNameFoundState,
+            lastUserFound,
             coroutineScope,
-            findUser
+            controller::findUser
         )
     }
     Column(
@@ -67,7 +70,7 @@ fun FindUserFrameImpl(
                 .weight(1f)
                 .wrapContentHeight()
         ) {
-            StatusPanel(searchRunningState, lastNameFoundState, addUser, onReturn)
+            StatusPanel(searchRunningState, lastUserFound, controller::addUser, onReturn)
         }
         LineTextField(fieldState = usernameFieldState, labelText = "Enter username to search")
         Spacer(modifier = Modifier.weight(0.1f))
@@ -94,15 +97,15 @@ private fun TopPanel(onReturn: () -> Unit) {
 @Composable
 private fun StatusPanel(
     searchRunningState: MutableState<Boolean>,
-    lastFoundUsername: MutableState<String?>,
-    addUser: (String) -> Unit,
+    lastFoundUser: MutableState<User?>,
+    addUser: (User) -> Unit,
     onReturn: () -> Unit
 ) {
     if (searchRunningState.value) {
         CircularProgressIndicator()
         return
     }
-    if (lastFoundUsername.value == null) {
+    if (lastFoundUser.value == null) {
         Text("No results yet", style = MaterialTheme.typography.h4)
     } else {
         Column(
@@ -111,7 +114,7 @@ private fun StatusPanel(
             modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Text(
-                "${lastFoundUsername.value}",
+                lastFoundUser.value!!.displayName,
                 style = MaterialTheme.typography.h5,
                 color = palette.primary
             )
@@ -123,7 +126,7 @@ private fun StatusPanel(
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Button(
                 onClick = {
-                    addUser(lastFoundUsername.value!!)
+                    addUser(lastFoundUser.value!!)
                     onReturn()
                 }
             ) { Text("Add User") }
@@ -134,21 +137,16 @@ private fun StatusPanel(
 private fun startSearching(
     searchRunningState: MutableState<Boolean>,
     usernameFieldState: MutableState<TextFieldValue>,
-    lastNameFoundState: MutableState<String?>,
+    lastUserFoundState: MutableState<User?>,
     coroutineScope: CoroutineScope,
-    findUser: (String) -> Boolean
+    findUser: (String) -> User?
 ) {
     // Demo. We emulate searching
     coroutineScope.launch {
         searchRunningState.value = true
         delay(2000)
-        val searchResult = findUser(usernameFieldState.value.text)
+        lastUserFoundState.value = findUser(usernameFieldState.value.text)
         searchRunningState.value = false
-        if (searchResult) {
-            lastNameFoundState.value = usernameFieldState.value.text
-        } else {
-            lastNameFoundState.value = null
-        }
     }
 }
 
@@ -157,7 +155,7 @@ private fun startSearching(
 private fun FindUserFramePreview() {
     DismessTheme {
         Surface(color = palette.surface) {
-            FindUserFrameImpl(findUser = { true }, addUser = { }) { }
+            FindUserFrameImpl(FindUserFrameController()) { }
         }
     }
 }

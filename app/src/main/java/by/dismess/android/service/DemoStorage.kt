@@ -1,5 +1,6 @@
 package by.dismess.android.service
 
+import by.dismess.android.service.model.Chat
 import by.dismess.core.model.UserID
 import java.math.BigInteger
 

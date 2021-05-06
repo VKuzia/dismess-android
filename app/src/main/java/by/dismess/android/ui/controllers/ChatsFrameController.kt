@@ -1,8 +1,8 @@
 package by.dismess.android.ui.controllers
 
 import by.dismess.android.service.AppInfo
-import by.dismess.android.service.Chat
 import by.dismess.android.service.DemoStorage
+import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.interfaces.ChatsFrameInterface
 import org.koin.core.context.GlobalContext.get
 

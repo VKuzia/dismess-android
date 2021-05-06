@@ -48,7 +48,5 @@ private fun DialogFrame(navController: NavController, chatName: String?) {
 
 @Composable
 private fun FindUserFrame(navController: NavController) {
-    FindUserFrameImpl({ true }, {}) {
-        navController.navigate("ChatsFrame")
-    }
+    FindUserFrameImpl { navController.navigate("ChatsFrame") }
 }

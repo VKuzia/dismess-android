@@ -1,6 +1,6 @@
 package by.dismess.android.ui.controllers.interfaces
 
-import by.dismess.android.service.Chat
+import by.dismess.android.service.model.Chat
 
 interface ChatsFrameInterface {
     fun refreshHistory()
