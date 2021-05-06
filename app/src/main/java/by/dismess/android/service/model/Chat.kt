@@ -6,11 +6,11 @@ import java.util.Date
 import kotlin.collections.ArrayList
 
 // Demo Version only
-class Chat(val name: String, id: UserID) {
+class Chat(val name: String, val userID: UserID) {
     val messages = MutableList(15) {
         Message(
             Date(),
-            id,
+            userID,
             "some text",
             ArrayList()
         )

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.lib.get
 import by.dismess.android.service.DemoStorage
+import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.ChatsFrameController
 import by.dismess.android.ui.controllers.interfaces.ChatsFrameInterface
 import by.dismess.android.ui.forms.ChatForm
@@ -49,7 +50,7 @@ import kotlinx.coroutines.launch
 fun ChatsFrameImpl(
     onFindUser: () -> Unit,
     controller: ChatsFrameInterface = get(),
-    onDialogStart: (String) -> Unit
+    onDialogStart: (Chat) -> Unit
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Column {
@@ -57,7 +58,7 @@ fun ChatsFrameImpl(
         LazyColumn {
             items(controller.getChatsList()) {
                 Divider(color = palette.primary, thickness = 1.dp)
-                ChatForm(it.name, onDialogStart)
+                ChatForm(it, onDialogStart)
             }
         }
     }

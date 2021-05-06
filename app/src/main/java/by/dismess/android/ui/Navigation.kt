@@ -6,10 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import by.dismess.android.lib.get
+import by.dismess.android.service.DemoStorage
 import by.dismess.android.ui.frames.ChatsFrameImpl
 import by.dismess.android.ui.frames.DialogFrameImpl
 import by.dismess.android.ui.frames.FindUserFrameImpl
 import by.dismess.android.ui.frames.InviteFrameImpl
+import by.dismess.core.model.UserID
+import org.koin.core.parameter.parametersOf
+import java.math.BigInteger
 
 @Composable
 fun Navigate() {
@@ -18,8 +23,8 @@ fun Navigate() {
     NavHost(navController, startDestination = "InviteFrame") {
         composable("InviteFrame") { InviteFrame(navController) }
         composable("ChatsFrame") { ChatsFrame(navController) }
-        composable("DialogFrame/{chatName}") { backStackEntry ->
-            DialogFrame(navController, backStackEntry.arguments?.getString("chatName"))
+        composable("DialogFrame/{chosenChat}") { backStackEntry ->
+            DialogFrame(navController, backStackEntry.arguments?.getString("chosenChat"))
         }
         composable("FindUserFrame") { FindUserFrame(navController) }
     }
@@ -32,18 +37,20 @@ fun InviteFrame(navController: NavController) {
 
 @Composable
 private fun ChatsFrame(navController: NavController) {
-    ChatsFrameImpl({ navController.navigate("FindUserFrame") }) { chosenChatName ->
-        navController.navigate("DialogFrame/$chosenChatName")
+    ChatsFrameImpl({ navController.navigate("FindUserFrame") }) { chosenChat ->
+        navController.navigate("DialogFrame/${chosenChat.userID.rawID}")
     }
 }
 
-private val exampleOfMessages = MutableList(5) { it.toString() } // Demo
-
 @Composable
-private fun DialogFrame(navController: NavController, chatName: String?) {
-    DialogFrameImpl(chatName.toString(), exampleOfMessages) {
-        navController.navigate("ChatsFrame")
+private fun DialogFrame(navController: NavController, chatIdString: String?) {
+    if (chatIdString == null) {
+        return
     }
+    val storage: DemoStorage = get()
+    val chatId = UserID(BigInteger(chatIdString))
+    val chat = storage.chats.find { it.userID == chatId }
+    DialogFrameImpl(get(null) { parametersOf(chat) }) { navController.navigate("ChatsFrame") }
 }
 
 @Composable
