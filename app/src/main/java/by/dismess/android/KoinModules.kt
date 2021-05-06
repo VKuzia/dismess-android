@@ -2,6 +2,8 @@ package by.dismess.android
 
 import android.content.Context
 import by.dismess.android.impl.StorageInterfaceImpl
+import by.dismess.android.service.AppInfo
+import by.dismess.android.service.DemoStorage
 import by.dismess.android.ui.controllers.ChatsFrameController
 import by.dismess.android.ui.controllers.DialogFrameController
 import by.dismess.android.ui.controllers.FindUserFrameController
@@ -23,8 +25,13 @@ val coreImplModule = module {
 }
 
 val controllersModule = module {
-    single<ChatsFrameInterface> { ChatsFrameController() }
+    single<ChatsFrameInterface> { ChatsFrameController(get(), get()) }
     single<DialogFrameInterface> { DialogFrameController() }
     single<FindUserFrameInterface> { FindUserFrameController() }
     single<InviteFrameInterface> { InviteFrameController() }
+}
+
+val demoModule = module {
+    single { DemoStorage() }
+    single { AppInfo() }
 }

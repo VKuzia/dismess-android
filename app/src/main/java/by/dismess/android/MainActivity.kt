@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
             modules(
                 snappyModule,
                 coreImplModule,
-                controllersModule
+                controllersModule,
+                demoModule
             )
         }
 
