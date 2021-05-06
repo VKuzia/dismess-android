@@ -26,7 +26,7 @@ import org.koin.core.qualifier.Qualifier
 @Composable
 inline fun <reified T> get(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null,
+    noinline parameters: ParametersDefinition? = null
 ): T = remember {
     GlobalContext.get().get(qualifier, parameters)
 }
