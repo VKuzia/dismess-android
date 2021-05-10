@@ -32,6 +32,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import by.dismess.android.lib.get
+import by.dismess.android.service.AppInfo
+import by.dismess.android.service.DemoStorage
+import by.dismess.android.service.model.Chat
+import by.dismess.android.ui.controllers.ChatsFrameController
+import by.dismess.android.ui.controllers.interfaces.ChatsFrameInterface
 import by.dismess.android.ui.forms.ChatForm
 import by.dismess.android.ui.forms.TextMapForm
 import by.dismess.android.ui.helpers.BooleanToast
@@ -43,22 +49,26 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ChatsFrameImpl(
-    chatList: Array<String>,
-    onRefreshHistory: () -> Unit,
     onFindUser: () -> Unit,
-    onDialogStart: (String) -> Unit
+    controller: ChatsFrameInterface = get(),
+    onDialogStart: (Chat) -> Unit
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Column {
-        TopPanel({ setShowDialog(true) }, onRefreshHistory, onFindUser)
+        TopPanel({ setShowDialog(true) }, controller::refreshHistory, onFindUser)
         LazyColumn {
-            items(chatList) {
+            items(controller.getChatsList()) {
                 Divider(color = palette.primary, thickness = 1.dp)
                 ChatForm(it, onDialogStart)
             }
         }
     }
-    AboutDialog("12345678", showDialog, setShowDialog)
+    AboutDialog(
+        controller.getAppVersion(),
+        controller.getUserIdAsString(),
+        showDialog,
+        setShowDialog
+    )
 }
 
 @Composable
@@ -105,7 +115,12 @@ private fun TopPanel(
 }
 
 @Composable
-private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean) -> Unit) {
+private fun AboutDialog(
+    version: String,
+    id: String,
+    showDialog: Boolean,
+    setShowDialog: (Boolean) -> Unit
+) {
     val copiedState = remember { mutableStateOf(false) }
     if (showDialog) {
         Dialog(onDismissRequest = { setShowDialog(false) }) {
@@ -118,7 +133,7 @@ private fun AboutDialog(id: String, showDialog: Boolean, setShowDialog: (Boolean
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("About Dismess")
-                    TextMapForm("Version", "0.0.1")
+                    TextMapForm("Version", version)
                     TextMapForm("Company", "Dismess")
                     Divider(modifier = Modifier.padding(10.dp))
                     TextMapForm("Your ID", id)
@@ -158,20 +173,9 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
 @Preview
 @Composable
 private fun ChatsFrameDefaultPreview() {
-    val chatList = arrayOf("One", "Two", "Three", "Four", "Five")
     DismessTheme {
         Surface(color = palette.surface) {
-            ChatsFrameImpl(chatList, {}, {}) { }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ChatsFrameAboutDialogPreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-            AboutDialog(id = "12345", showDialog = true) {}
+            ChatsFrameImpl({}, ChatsFrameController(DemoStorage(), AppInfo("0.0.1"))) { }
         }
     }
 }

@@ -18,16 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.dismess.android.R
+import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
 
 @Composable
-fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = "...") {
+fun ChatForm(chatModel: Chat, onClick: (Chat) -> Unit, lastMessage: String = "...") {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = { onClick(chatName) })
+            .clickable(onClick = { onClick(chatModel) })
             .background(color = palette.background)
     ) {
         Row(
@@ -38,7 +39,7 @@ fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = 
             Spacer(Modifier.width(10.dp))
             Column {
                 Text(
-                    chatName, modifier = Modifier.padding(6.dp),
+                    chatModel.name, modifier = Modifier.padding(6.dp),
                     style = MaterialTheme.typography.h5
                 )
                 Text(
@@ -55,7 +56,7 @@ fun ChatForm(chatName: String, onClick: (String) -> Unit, lastMessage: String = 
 private fun ChatFormDefaultPreview() {
     DismessTheme {
         Surface(color = palette.surface) {
-            ChatForm("Some chat", {}, "Last message")
+//            ChatForm("Some chat", {}, "Last message")
         }
     }
 }
