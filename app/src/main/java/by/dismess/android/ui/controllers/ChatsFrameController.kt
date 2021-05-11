@@ -25,4 +25,8 @@ class ChatsFrameController(
     override fun getUserIdAsString(): String {
         return storage.ownId.toString()
     }
+
+    override fun retrieveInvite(): String? {
+        return "INVITE"
+    }
 }

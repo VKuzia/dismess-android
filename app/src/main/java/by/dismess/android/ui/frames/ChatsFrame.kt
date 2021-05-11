@@ -3,6 +3,7 @@ package by.dismess.android.ui.frames
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat.startActivity
 import by.dismess.android.lib.get
 import by.dismess.android.service.AppInfo
 import by.dismess.android.service.DemoStorage
@@ -59,7 +61,13 @@ fun ChatsFrameImpl(
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Scaffold(
-        topBar = { TopPanel({ setShowDialog(true) }, controller::refreshHistory) },
+        topBar = {
+            TopPanel(
+                { setShowDialog(true) },
+                controller::refreshHistory,
+                controller::retrieveInvite
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onFindUser, backgroundColor = palette.primary) {
                 Icon(Icons.Filled.Search, "")
@@ -85,10 +93,12 @@ fun ChatsFrameImpl(
 @Composable
 private fun TopPanel(
     onAboutTriggered: () -> Unit,
-    onRefreshHistory: () -> Unit
+    onRefreshHistory: () -> Unit,
+    onInviteRetrieve: () -> String?
 ) {
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val refreshDoneState = remember { mutableStateOf(false) }
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         title = {
@@ -118,7 +128,20 @@ private fun TopPanel(
             } else {
                 CircularProgressIndicator()
             }
-            TopPanelIconButton(onClick = { /*TODO*/ }, imageVector = Icons.Filled.Share)
+            TopPanelIconButton(
+                imageVector = Icons.Filled.Share,
+                onClick = {
+                    val inviteString = onInviteRetrieve()
+                    if (inviteString != null) {
+                        val shareIntent = Intent()
+                        shareIntent.action = Intent.ACTION_SEND
+                        shareIntent.type = "text/plain"
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, inviteString)
+                        val chooserIntent = Intent.createChooser(shareIntent, "Share with")
+                        context.startActivity(chooserIntent)
+                    }
+                }
+            )
         }
     )
     BooleanToast(refreshDoneState, "Refreshed")
