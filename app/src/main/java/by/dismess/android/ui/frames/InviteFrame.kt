@@ -30,7 +30,6 @@ import by.dismess.android.ui.helpers.LineTextField
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val INVALID_DATA_STATUS_MESSAGE = "Invalid input data.\n Please, try again."
@@ -39,6 +38,7 @@ private const val INVALID_TEXT_MESSAGE = "Invalid Field"
 
 @Composable
 fun InviteFrameImpl(controller: InviteFrameInterface = get(), navigateToChats: () -> Unit) {
+    val isRegisteredState = remember { mutableStateOf(controller.isRegistered()) }
     val loginFieldState = remember { mutableStateOf(TextFieldValue()) }
     val inviteFieldState = remember { mutableStateOf(TextFieldValue()) }
     val loginErrorState = remember { mutableStateOf<String?>(null) }
@@ -55,37 +55,49 @@ fun InviteFrameImpl(controller: InviteFrameInterface = get(), navigateToChats: (
         Greet()
         // Is needed to preserve space for StatusPanel
         // Otherwise TextFields will move on status change
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.2f)
-                .wrapContentSize()
-        ) {
-            StatusPanel(runningValidationState, statusState)
-        }
-        LineTextField(loginFieldState, "Enter your login", errorState = loginErrorState)
-        LineTextField(inviteFieldState, "Enter service invite", errorState = inviteErrorState)
-        Button(
-            onClick = {
-                val loginValidationResult =
-                    validateTextField(loginFieldState, loginErrorState, controller::isValidLogin)
-                val inviteValidationResult =
-                    validateTextField(inviteFieldState, inviteErrorState, controller::isValidInvite)
-                if (!loginValidationResult || !inviteValidationResult) {
-                    statusState.value = INVALID_DATA_STATUS_MESSAGE
-                } else {
-                    tryEnter(
-                        controller,
-                        runningValidationState,
-                        statusState,
-                        loginFieldState.value.text,
-                        inviteFieldState.value.text,
-                        coroutineScope,
-                        navigateToChats
-                    )
-                }
+        if (isRegisteredState.value) {
+            Button(onClick = navigateToChats) { Text("Continue") }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight(0.2f)
+                    .wrapContentSize()
+            ) {
+                StatusPanel(runningValidationState, statusState)
             }
-        ) {
-            Text("Proceed")
+            LineTextField(loginFieldState, "Enter your login", errorState = loginErrorState)
+            LineTextField(inviteFieldState, "Enter service invite", errorState = inviteErrorState)
+            Button(
+                onClick = {
+                    val loginValidationResult =
+                        validateTextField(
+                            loginFieldState,
+                            loginErrorState,
+                            controller::isValidLogin
+                        )
+                    val inviteValidationResult =
+                        validateTextField(
+                            inviteFieldState,
+                            inviteErrorState,
+                            controller::isValidInvite
+                        )
+                    if (!loginValidationResult || !inviteValidationResult) {
+                        statusState.value = INVALID_DATA_STATUS_MESSAGE
+                    } else {
+                        tryEnter(
+                            controller,
+                            runningValidationState,
+                            statusState,
+                            loginFieldState.value.text,
+                            inviteFieldState.value.text,
+                            coroutineScope,
+                            navigateToChats
+                        )
+                    }
+                }
+            ) {
+                Text("Proceed")
+            }
         }
         Spacer(modifier = Modifier.fillMaxHeight(0.2f))
     }
@@ -152,7 +164,6 @@ private fun tryEnter(
     // Demo. We emulate hard work of validation.
     coroutineScope.launch {
         runningValidationState.value = true
-        delay(2000)
         val result = controller.tryEnterSystem(login, invite)
         runningValidationState.value = false
         if (result) {
