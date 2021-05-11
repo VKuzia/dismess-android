@@ -12,9 +12,8 @@ import by.dismess.android.ui.frames.ChatsFrameImpl
 import by.dismess.android.ui.frames.DialogFrameImpl
 import by.dismess.android.ui.frames.FindUserFrameImpl
 import by.dismess.android.ui.frames.InviteFrameImpl
-import by.dismess.core.model.UserID
+import by.dismess.core.utils.UniqID
 import org.koin.core.parameter.parametersOf
-import java.math.BigInteger
 
 @Composable
 fun Navigate() {
@@ -38,7 +37,7 @@ fun InviteFrame(navController: NavController) {
 @Composable
 private fun ChatsFrame(navController: NavController) {
     ChatsFrameImpl({ navController.navigate("FindUserFrame") }) { chosenChat ->
-        navController.navigate("DialogFrame/${chosenChat.userID.rawID}")
+        navController.navigate("DialogFrame/${chosenChat.userID}")
     }
 }
 
@@ -48,7 +47,7 @@ private fun DialogFrame(navController: NavController, chatIdString: String?) {
         return
     }
     val storage: DemoStorage = get()
-    val chatId = UserID(BigInteger(chatIdString))
+    val chatId = UniqID(chatIdString)
     val chat = storage.chats.find { it.userID == chatId }
     DialogFrameImpl(get(null) { parametersOf(chat) }) { navController.navigate("ChatsFrame") }
 }
