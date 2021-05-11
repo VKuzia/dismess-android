@@ -7,5 +7,5 @@ interface ChatsFrameInterface {
     fun getChatsList(): MutableList<Chat>
     fun getAppVersion(): String
     fun getUserIdAsString(): String
-    fun retrieveInvite(): String?
+    suspend fun retrieveInvite(): String?
 }

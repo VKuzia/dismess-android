@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.content.ContextCompat.startActivity
 import by.dismess.android.lib.get
 import by.dismess.android.service.AppInfo
 import by.dismess.android.service.DemoStorage
@@ -50,8 +49,10 @@ import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.reflect.KSuspendFunction0
 
 @Composable
 fun ChatsFrameImpl(
@@ -94,7 +95,7 @@ fun ChatsFrameImpl(
 private fun TopPanel(
     onAboutTriggered: () -> Unit,
     onRefreshHistory: () -> Unit,
-    onInviteRetrieve: () -> String?
+    onInviteRetrieve: KSuspendFunction0<String?>
 ) {
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val refreshDoneState = remember { mutableStateOf(false) }
@@ -131,14 +132,16 @@ private fun TopPanel(
             TopPanelIconButton(
                 imageVector = Icons.Filled.Share,
                 onClick = {
-                    val inviteString = onInviteRetrieve()
-                    if (inviteString != null) {
-                        val shareIntent = Intent()
-                        shareIntent.action = Intent.ACTION_SEND
-                        shareIntent.type = "text/plain"
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, inviteString)
-                        val chooserIntent = Intent.createChooser(shareIntent, "Share with")
-                        context.startActivity(chooserIntent)
+                    GlobalScope.launch {
+                        val inviteString = onInviteRetrieve()
+                        if (inviteString != null) {
+                            val shareIntent = Intent()
+                            shareIntent.action = Intent.ACTION_SEND
+                            shareIntent.type = "text/plain"
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, inviteString)
+                            val chooserIntent = Intent.createChooser(shareIntent, "Share with")
+                            context.startActivity(chooserIntent)
+                        }
                     }
                 }
             )
