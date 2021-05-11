@@ -59,7 +59,7 @@ import kotlin.reflect.KSuspendFunction0
 fun ChatsFrameImpl(
     onFindUser: () -> Unit,
     controller: ChatsFrameInterface = get(),
-    onDialogStart: (Chat) -> Unit,
+    onDialogStart: (Chat) -> Unit
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Scaffold(

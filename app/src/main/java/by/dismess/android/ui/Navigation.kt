@@ -6,20 +6,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import by.dismess.android.BuildConfig
 import by.dismess.android.lib.get
 import by.dismess.android.service.DemoStorage
 import by.dismess.android.ui.frames.ChatsFrameImpl
 import by.dismess.android.ui.frames.DialogFrameImpl
 import by.dismess.android.ui.frames.FindUserFrameImpl
 import by.dismess.android.ui.frames.InviteFrameImpl
+import by.dismess.core.managers.App
 import by.dismess.core.utils.UniqID
+import kotlinx.coroutines.runBlocking
+import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun Navigate() {
+fun Navigate(app: App = GlobalContext.get().get()) {
     val navController = rememberNavController()
-
-    NavHost(navController, startDestination = "InviteFrame") {
+    var startDestination = "InviteFrame"
+    if (BuildConfig.ADAM) {
+        startDestination = "ChatsFrame"
+        runBlocking { app.saveInitialData("ADAM") }
+    }
+    NavHost(navController, startDestination = startDestination) {
         composable("InviteFrame") { InviteFrame(navController) }
         composable("ChatsFrame") { ChatsFrame(navController) }
         composable("DialogFrame/{chosenChat}") { backStackEntry ->
