@@ -13,7 +13,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -21,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -54,15 +58,22 @@ fun ChatsFrameImpl(
     onDialogStart: (Chat) -> Unit
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
-    Column {
-        TopPanel({ setShowDialog(true) }, controller::refreshHistory, onFindUser)
-        LazyColumn {
-            items(controller.getChatsList()) {
-                Divider(color = palette.primary, thickness = 1.dp)
-                ChatForm(it, onDialogStart)
+    Scaffold(
+        topBar = { TopPanel({ setShowDialog(true) }, controller::refreshHistory) },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onFindUser, backgroundColor = palette.primary) {
+                Icon(Icons.Filled.Search, "")
+            }
+        },
+        content = {
+            LazyColumn {
+                items(controller.getChatsList()) {
+                    Divider(color = palette.primary, thickness = 1.dp)
+                    ChatForm(it, onDialogStart)
+                }
             }
         }
-    }
+    )
     AboutDialog(
         controller.getAppVersion(),
         controller.getUserIdAsString(),
@@ -74,8 +85,7 @@ fun ChatsFrameImpl(
 @Composable
 private fun TopPanel(
     onAboutTriggered: () -> Unit,
-    onRefreshHistory: () -> Unit,
-    onFindUser: () -> Unit
+    onRefreshHistory: () -> Unit
 ) {
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val refreshDoneState = remember { mutableStateOf(false) }
@@ -108,7 +118,7 @@ private fun TopPanel(
             } else {
                 CircularProgressIndicator()
             }
-            TopPanelIconButton(onClick = onFindUser, imageVector = Icons.Filled.Search)
+            TopPanelIconButton(onClick = { /*TODO*/ }, imageVector = Icons.Filled.Share)
         }
     )
     BooleanToast(refreshDoneState, "Refreshed")

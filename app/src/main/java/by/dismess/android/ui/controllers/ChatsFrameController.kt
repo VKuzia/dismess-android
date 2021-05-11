@@ -23,6 +23,6 @@ class ChatsFrameController(
     }
 
     override fun getUserIdAsString(): String {
-        return storage.ownId.rawID.toString()
+        return storage.ownId.toString()
     }
 }

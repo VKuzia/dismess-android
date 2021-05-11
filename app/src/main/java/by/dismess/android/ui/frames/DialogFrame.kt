@@ -43,11 +43,10 @@ import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
-import by.dismess.core.model.Message
-import by.dismess.core.model.UserID
+import by.dismess.core.chating.elements.Message
+import by.dismess.core.utils.UniqID
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.math.BigInteger
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -80,7 +79,7 @@ private fun MessageList(
     modifier: Modifier,
     state: LazyListState,
     messages: SnapshotStateList<Message>,
-    ownId: UserID
+    ownId: UniqID
 ) {
     val dateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
     LazyColumn(modifier = modifier, state = state) {
@@ -88,7 +87,7 @@ private fun MessageList(
             MessageForm(
                 it.text,
                 dateFormat.format(it.date),
-                if (it.author == ownId) MessageType.OWNERS else MessageType.OTHERS
+                if (it.senderID == ownId) MessageType.OWNERS else MessageType.OTHERS
             )
         }
     }
@@ -168,7 +167,7 @@ private fun DialogFrameDefaultPreview() {
             DialogFrameImpl(
                 DialogFrameController(
                     DemoStorage(),
-                    Chat("1", UserID(BigInteger.ZERO))
+                    Chat("1", UniqID("0"))
                 )
             ) { }
         }

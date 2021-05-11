@@ -1,5 +1,5 @@
 package by.dismess.android.service.model
 
-import by.dismess.core.model.UserID
+import by.dismess.core.utils.UniqID
 
-data class User(val username: String, val displayName: String, var id: UserID)
+data class User(val username: String, val displayName: String, var id: UniqID)

@@ -3,8 +3,9 @@ package by.dismess.android.ui.controllers
 import by.dismess.android.service.DemoStorage
 import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.interfaces.DialogFrameInterface
-import by.dismess.core.model.Message
-import by.dismess.core.model.UserID
+import by.dismess.core.chating.elements.Message
+import by.dismess.core.utils.UniqID
+import java.util.Date
 
 class DialogFrameController(private val storage: DemoStorage, private val chat: Chat) :
     DialogFrameInterface {
@@ -18,7 +19,7 @@ class DialogFrameController(private val storage: DemoStorage, private val chat: 
     }
 
     override fun addMessage(text: String) {
-        val message = Message(text = text, author = storage.ownId)
+        val message = Message(Date(), chat.userID, storage.ownId, text)
         updateMessageListFun(message)
         // Sending message goes here
         chat.messages.add(message)
@@ -32,7 +33,7 @@ class DialogFrameController(private val storage: DemoStorage, private val chat: 
         return chat.name
     }
 
-    override fun getOwnId(): UserID {
+    override fun getOwnId(): UniqID {
         return storage.ownId
     }
 }
