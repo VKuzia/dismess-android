@@ -46,7 +46,7 @@ dependencies {
     implementation group: 'org.koin', name: 'koin-android', version: '2.2.2'
     implementation group: 'org.koin', name: 'koin-gradle-plugin', version: '2.2.2'
     implementation group: 'org.koin', name: 'koin-androidx-compose', version: '2.2.2'
-    implementation 'by.dismess.core:dismess:0.4.43-snapshot' // core repository
+    implementation 'by.dismess.core:dismess:0.5.25-snapshot' // core repository
     implementation 'com.snappydb:snappydb-lib:0.5.2' // snappy key-value storage
     implementation 'com.esotericsoftware.kryo:kryo:2.24.0'
     implementation 'androidx.core:core-ktx:1.3.2'

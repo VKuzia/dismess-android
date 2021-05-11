@@ -1,12 +1,12 @@
 package by.dismess.android.ui.controllers
 
-import AppImpl
 import by.dismess.android.ui.controllers.interfaces.InviteFrameInterface
+import by.dismess.core.managers.App
 import by.dismess.core.model.Invite
 import kotlinx.coroutines.runBlocking
-import org.koin.core.context.GlobalContext.get
+import org.koin.core.context.GlobalContext
 
-class InviteFrameController(private val api: AppImpl = get().get()) : InviteFrameInterface {
+class InviteFrameController(private val api: App = GlobalContext.get().get()) : InviteFrameInterface {
 
     override suspend fun tryEnterSystem(login: String, inviteString: String): Boolean {
         val invite = Invite.create(inviteString) ?: return false
@@ -25,7 +25,7 @@ class InviteFrameController(private val api: AppImpl = get().get()) : InviteFram
     }
 
     override fun isRegistered(): Boolean {
-        var result = false
+        var result: Boolean
         runBlocking {
             result = api.isRegistered()
         }

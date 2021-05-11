@@ -7,23 +7,23 @@ import androidx.compose.material.Surface
 import by.dismess.android.ui.Navigate
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
-import by.dismess.core.startCore
+import by.dismess.core.getModulesList
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startCore(coreImplModule)
+        val modulesList = listOf(
+            snappyModule,
+            controllersModule,
+            coreImplModule,
+            demoModule
+        ) + getModulesList()
         startKoin {
             androidContext(this@MainActivity)
-            modules(
-                snappyModule,
-                controllersModule,
-                demoModule
-            )
+            modules(modulesList)
         }
-
         setContent {
             DismessTheme {
                 Surface(color = palette.surface) {
