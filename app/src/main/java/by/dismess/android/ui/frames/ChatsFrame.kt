@@ -96,7 +96,7 @@ fun ChatsFrameImpl(
 private fun TopPanel(
     onAboutTriggered: () -> Unit,
     onRefreshHistory: () -> Unit,
-    onInviteRetrieve: KSuspendFunction0<Invite?>,
+    onInviteRetrieve: KSuspendFunction0<Invite?>
 ) {
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val refreshDoneState = remember { mutableStateOf(false) }
@@ -156,7 +156,7 @@ private fun AboutDialog(
     version: String,
     id: String,
     showDialog: Boolean,
-    setShowDialog: (Boolean) -> Unit,
+    setShowDialog: (Boolean) -> Unit
 ) {
     val copiedState = remember { mutableStateOf(false) }
     if (showDialog) {
