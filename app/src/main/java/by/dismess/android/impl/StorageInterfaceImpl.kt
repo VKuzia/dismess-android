@@ -4,7 +4,7 @@ import by.dismess.core.outer.StorageInterface
 import com.snappydb.DB
 
 class StorageInterfaceImpl(
-    private val snappyDB: DB,
+    private val snappyDB: DB
 ) : StorageInterface {
     override suspend fun exists(key: String): Boolean = snappyDB.exists(key)
 

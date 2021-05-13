@@ -20,12 +20,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "boolean", "ADAM", "false"
+            buildConfigField "boolean", "ADAM", "true"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "ADAM", "false"
+            buildConfigField "boolean", "ADAM", "true"
         }
     }
     compileOptions {

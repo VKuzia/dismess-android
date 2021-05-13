@@ -10,7 +10,7 @@ import org.koin.core.context.GlobalContext
 
 class InviteFrameController(
     private val api: App = GlobalContext.get().get(),
-    private val dht: DHT = GlobalContext.get().get(),
+    private val dht: DHT = GlobalContext.get().get()
 ) : InviteFrameInterface {
 
     override suspend fun tryEnterSystem(login: String, inviteString: String): Boolean {
