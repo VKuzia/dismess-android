@@ -35,4 +35,5 @@ val controllersModule = module {
 val demoModule = module {
     single { DemoStorage() }
     single { AppInfo() }
+    single { App() }
 }

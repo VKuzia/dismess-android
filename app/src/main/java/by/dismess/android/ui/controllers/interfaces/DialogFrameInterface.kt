@@ -6,7 +6,7 @@ import by.dismess.core.utils.UniqID
 interface DialogFrameInterface {
     fun registerMessagesListener(func: (message: Message) -> Unit)
     fun getMessages(): MutableList<Message>
-    fun addMessage(text: String)
+    fun sendMessage(text: String)
     fun refreshHistory()
     fun getChatName(): String
     fun getOwnId(): UniqID
