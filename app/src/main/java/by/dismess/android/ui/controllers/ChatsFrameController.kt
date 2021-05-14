@@ -4,7 +4,7 @@ import by.dismess.android.service.AppInfo
 import by.dismess.android.service.DemoStorage
 import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.interfaces.ChatsFrameInterface
-import by.dismess.core.network.convertAddressToInvite
+import by.dismess.core.model.Invite
 import by.dismess.core.network.retrievePublicSocketAddress
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -30,11 +30,11 @@ class ChatsFrameController(
         return storage.ownId.toString()
     }
 
-    override suspend fun retrieveInvite(): String? {
+    override suspend fun retrieveInvite(): Invite? {
         val socketAddress = GlobalScope.async {
             retrievePublicSocketAddress(1234)
         }
         val result = socketAddress.await() ?: return null
-        return convertAddressToInvite(result)
+        return Invite(storage.ownId, result)
     }
 }

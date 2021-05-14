@@ -49,6 +49,7 @@ import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import by.dismess.core.model.Invite
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -95,7 +96,7 @@ fun ChatsFrameImpl(
 private fun TopPanel(
     onAboutTriggered: () -> Unit,
     onRefreshHistory: () -> Unit,
-    onInviteRetrieve: KSuspendFunction0<String?>
+    onInviteRetrieve: KSuspendFunction0<Invite?>
 ) {
     val historyRefreshRunningState = remember { mutableStateOf(false) }
     val refreshDoneState = remember { mutableStateOf(false) }
@@ -133,12 +134,12 @@ private fun TopPanel(
                 imageVector = Icons.Filled.Share,
                 onClick = {
                     GlobalScope.launch {
-                        val inviteString = onInviteRetrieve()
-                        if (inviteString != null) {
+                        val invite = onInviteRetrieve()
+                        if (invite != null) {
                             val shareIntent = Intent()
                             shareIntent.action = Intent.ACTION_SEND
                             shareIntent.type = "text/plain"
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, inviteString)
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, invite.toInviteString())
                             val chooserIntent = Intent.createChooser(shareIntent, "Share with")
                             context.startActivity(chooserIntent)
                         }
