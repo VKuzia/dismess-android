@@ -20,9 +20,11 @@ class DialogFrameController(
     DialogFrameInterface {
     private lateinit var updateMessageListFun: (Message) -> Unit
     override fun registerMessagesListener(func: (message: Message) -> Unit) {
+        updateMessageListFun = func
         app.network.setMessageReceiver { _, data ->
-            val message = Message(Date(), chat.userID, chat.userID, data.toString())
+            val message = Message(Date(), chat.userID, chat.userID, data.decodeToString())
             chat.messages.add(message)
+            println(message.text)
 //            addMessage(message)
             func(message)
         }
@@ -35,10 +37,11 @@ class DialogFrameController(
     override fun sendMessage(text: String) {
         val parts = text.split(':')
         val address = InetSocketAddress(parts[0], parts[1].toInt())
-        val message = Message(Date(), chat.userID, storage.ownId, text)
+        val message = Message(Date(), chat.userID, storage.ownId, parts.last())
         GlobalScope.launch {
             app.network.sendRawMessage(address, message.text.toByteArray())
         }
+        println("Sended ${message.text} to ${address.address}:${address.port}")
         chat.messages.add(message)
         addMessage(message)
     }
@@ -47,6 +50,8 @@ class DialogFrameController(
         updateMessageListFun(message)
     }
 
+    // 37.214.72.247:35942
+    // 37.214.72.247.41450
     override fun refreshHistory() {
 //        TODO("Not yet implemented")
     }

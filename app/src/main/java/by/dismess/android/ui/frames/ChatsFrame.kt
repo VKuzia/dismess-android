@@ -54,6 +54,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.InetAddress
 import java.net.InetSocketAddress
 import kotlin.reflect.KSuspendFunction0
 
@@ -138,6 +139,7 @@ private fun TopPanel(
                 imageVector = Icons.Filled.Share,
                 onClick = {
                     GlobalScope.async {
+//                        addressState.value = InetSocketAddress(InetAddress.getLocalHost().hostAddress, 1234)
                         addressState.value = retrievePublicSocketAddress(1234)!!
                         toastShowState.value = true
 //                        Toast.makeText(context, "${address.address}:${address.port}", Toast.LENGTH_LONG).show()

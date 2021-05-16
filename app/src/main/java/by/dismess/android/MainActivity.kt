@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         }
         app = get().get()
         runBlocking {
-            app.start(InetSocketAddress(1234))
+            app.start(InetSocketAddress(1111))
         }
         setContent {
             DismessTheme {

@@ -1,12 +1,12 @@
 package by.dismess.android
 
-import by.dismess.core.network.RUDPNetworkInterfaceImpl
+import by.dismess.core.network.TCPNetworkInterfaceImpl
 import java.net.InetSocketAddress
 
 class App {
-    lateinit var network: RUDPNetworkInterfaceImpl
+    lateinit var network: TCPNetworkInterfaceImpl
     suspend fun start(address: InetSocketAddress) {
-        network = RUDPNetworkInterfaceImpl()
+        network = TCPNetworkInterfaceImpl()
         network.start(address)
     }
 }
