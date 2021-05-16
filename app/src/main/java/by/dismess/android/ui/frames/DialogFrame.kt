@@ -66,7 +66,7 @@ fun DialogFrameImpl(controller: DialogFrameInterface = get(), onBackToChats: () 
         )
         MessageList(Modifier.weight(10f), lazyListState, messagesList, controller.getOwnId())
         TextPanel(Modifier.weight(1f)) {
-            controller.addMessage(it)
+            controller.sendMessage(it)
             coroutineScope.launch {
                 lazyListState.animateScrollToItem(messagesList.lastIndex)
             }

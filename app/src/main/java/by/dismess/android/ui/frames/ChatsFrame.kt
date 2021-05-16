@@ -3,7 +3,6 @@ package by.dismess.android.ui.frames
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,9 +49,13 @@ import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
 import by.dismess.core.model.Invite
+import by.dismess.core.network.retrievePublicSocketAddress
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.InetAddress
+import java.net.InetSocketAddress
 import kotlin.reflect.KSuspendFunction0
 
 @Composable
@@ -102,6 +105,8 @@ private fun TopPanel(
     val refreshDoneState = remember { mutableStateOf(false) }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val toastShowState = remember { mutableStateOf(false) }
+    val addressState = remember { mutableStateOf<InetSocketAddress?>(null) }
     TopAppBar(
         title = {
             Text(
@@ -133,22 +138,27 @@ private fun TopPanel(
             TopPanelIconButton(
                 imageVector = Icons.Filled.Share,
                 onClick = {
-                    GlobalScope.launch {
-                        val invite = onInviteRetrieve()
-                        if (invite != null) {
-                            val shareIntent = Intent()
-                            shareIntent.action = Intent.ACTION_SEND
-                            shareIntent.type = "text/plain"
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, invite.toInviteString())
-                            val chooserIntent = Intent.createChooser(shareIntent, "Share with")
-                            context.startActivity(chooserIntent)
-                        }
+                    GlobalScope.async {
+//                        addressState.value = InetSocketAddress(InetAddress.getLocalHost().hostAddress, 1234)
+                        addressState.value = retrievePublicSocketAddress(1234)!!
+                        toastShowState.value = true
+//                        Toast.makeText(context, "${address.address}:${address.port}", Toast.LENGTH_LONG).show()
+//                        val invite = onInviteRetrieve()
+//                        if (invite != null) {
+//                            val shareIntent = Intent()
+//                            shareIntent.action = Intent.ACTION_SEND
+//                            shareIntent.type = "text/plain"
+//                            shareIntent.putExtra(Intent.EXTRA_TEXT, invite.toInviteString())
+//                            val chooserIntent = Intent.createChooser(shareIntent, "Share with")
+//                            context.startActivity(chooserIntent)
+//                        }
                     }
                 }
             )
         }
     )
-    BooleanToast(refreshDoneState, "Refreshed")
+//    BooleanToast(refreshDoneState, "Refreshed")
+    BooleanToast(toastShowState, "${addressState.value?.address}:${addressState.value?.port}")
 }
 
 @Composable
