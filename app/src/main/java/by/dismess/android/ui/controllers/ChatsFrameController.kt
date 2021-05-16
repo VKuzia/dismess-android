@@ -6,9 +6,6 @@ import by.dismess.core.chating.ChatManager
 import by.dismess.core.chating.elements.Chat
 import by.dismess.core.managers.DataManager
 import by.dismess.core.model.Invite
-import by.dismess.core.network.retrievePublicSocketAddress
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.koin.core.context.GlobalContext.get
 
@@ -22,7 +19,8 @@ class ChatsFrameController(
     }
 
     override fun getChatsList(): MutableList<Chat> {
-        return  chatManager.chats.values.toMutableList()
+//        val list = mutableListOf<Chat>(Chat())
+        return chatManager.chats.values.toMutableList()
     }
 
     override fun getAppVersion(): String {

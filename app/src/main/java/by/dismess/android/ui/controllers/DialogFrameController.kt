@@ -1,6 +1,5 @@
 package by.dismess.android.ui.controllers
 
-import by.dismess.android.App
 import by.dismess.android.ui.controllers.interfaces.DialogFrameInterface
 import by.dismess.core.chating.ChatManager
 import by.dismess.core.chating.elements.Chat
@@ -21,13 +20,15 @@ class DialogFrameController(
     private val dataManager: DataManager = get().get(),
     private val chatManager: ChatManager = get().get(),
     private val eventBus: EventBus = get().get(),
-    private val app: App = get().get(),
-) :
-    DialogFrameInterface {
+) : DialogFrameInterface {
     private lateinit var updateMessageListFun: (Message) -> Unit
     override fun registerMessagesListener(func: (message: Message) -> Unit) {
         updateMessageListFun = func
-        eventBus.registerHandler<MessageEvent> { event -> func(event.message) }
+        eventBus.registerHandler<MessageEvent> { event ->
+            if (event.message.senderID == chat.otherID) {
+                func(event.message)
+            }
+        }
     }
 
     override fun getMessages(): MutableList<Message> = runBlocking {
@@ -43,7 +44,6 @@ class DialogFrameController(
     override fun sendMessage(text: String) {
         val message = Message(Date(), chat.id, chat.otherID, text)
         GlobalScope.launch {
-//            app.network.sendRawMessage(address, message.text.toByteArray())
             chat.sendMessage(message)
         }
         addMessage(message)
@@ -53,8 +53,8 @@ class DialogFrameController(
         updateMessageListFun(message)
     }
 
-    override fun refreshHistory() {
-//        TODO("Not yet implemented")
+    override fun refreshHistory() = runBlocking {
+        chat.synchronize()
     }
 
     override fun getChatName(): String {
