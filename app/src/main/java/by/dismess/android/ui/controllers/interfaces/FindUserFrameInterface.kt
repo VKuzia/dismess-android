@@ -1,6 +1,6 @@
 package by.dismess.android.ui.controllers.interfaces
 
-import by.dismess.android.service.model.User
+import by.dismess.core.model.User
 
 interface FindUserFrameInterface {
     fun refreshHistory()

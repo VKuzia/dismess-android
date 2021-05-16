@@ -32,8 +32,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.lib.get
-import by.dismess.android.service.DemoStorage
-import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.DialogFrameController
 import by.dismess.android.ui.controllers.interfaces.DialogFrameInterface
 import by.dismess.android.ui.forms.MessageForm
@@ -159,17 +157,3 @@ private fun TopPanel(
     BooleanToast(refreshDoneState, "Refreshed")
 }
 
-@Preview
-@Composable
-private fun DialogFrameDefaultPreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-            DialogFrameImpl(
-                DialogFrameController(
-                    DemoStorage(),
-                    Chat("1", UniqID("0"))
-                )
-            ) { }
-        }
-    }
-}

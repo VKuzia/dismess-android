@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import by.dismess.android.lib.get
 import by.dismess.android.service.AppInfo
-import by.dismess.android.service.DemoStorage
-import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.ChatsFrameController
 import by.dismess.android.ui.controllers.interfaces.ChatsFrameInterface
 import by.dismess.android.ui.forms.ChatForm
@@ -48,13 +46,13 @@ import by.dismess.android.ui.helpers.BooleanToast
 import by.dismess.android.ui.helpers.TopPanelIconButton
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import by.dismess.core.chating.elements.Chat
 import by.dismess.core.model.Invite
 import by.dismess.core.network.retrievePublicSocketAddress
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.net.InetAddress
 import java.net.InetSocketAddress
 import kotlin.reflect.KSuspendFunction0
 
@@ -217,12 +215,3 @@ private fun CopyToClipboard(text: String, copiedState: MutableState<Boolean>) {
     }
 }
 
-@Preview
-@Composable
-private fun ChatsFrameDefaultPreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-            ChatsFrameImpl({}, ChatsFrameController(DemoStorage(), AppInfo("0.0.1"))) { }
-        }
-    }
-}

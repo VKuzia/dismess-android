@@ -8,11 +8,11 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import by.dismess.android.BuildConfig
 import by.dismess.android.lib.get
-import by.dismess.android.service.DemoStorage
 import by.dismess.android.ui.frames.ChatsFrameImpl
 import by.dismess.android.ui.frames.DialogFrameImpl
 import by.dismess.android.ui.frames.FindUserFrameImpl
 import by.dismess.android.ui.frames.InviteFrameImpl
+import by.dismess.core.chating.ChatManager
 import by.dismess.core.managers.App
 import by.dismess.core.utils.UniqID
 import kotlinx.coroutines.runBlocking
@@ -45,7 +45,7 @@ fun InviteFrame(navController: NavController) {
 @Composable
 private fun ChatsFrame(navController: NavController) {
     ChatsFrameImpl({ navController.navigate("FindUserFrame") }) { chosenChat ->
-        navController.navigate("DialogFrame/${chosenChat.userID}")
+        navController.navigate("DialogFrame/${chosenChat.id}")
     }
 }
 
@@ -54,9 +54,9 @@ private fun DialogFrame(navController: NavController, chatIdString: String?) {
     if (chatIdString == null) {
         return
     }
-    val storage: DemoStorage = get()
+    val storage: ChatManager = get()
     val chatId = UniqID(chatIdString)
-    val chat = storage.chats.find { it.userID == chatId }
+    val chat = storage.chats[chatId]
     DialogFrameImpl(get(null) { parametersOf(chat) }) { navController.navigate("ChatsFrame") }
 }
 

@@ -1,6 +1,6 @@
 package by.dismess.android.ui.controllers.interfaces
 
-import by.dismess.android.service.model.Chat
+import by.dismess.core.chating.elements.Chat
 import by.dismess.core.model.Invite
 
 interface ChatsFrameInterface {

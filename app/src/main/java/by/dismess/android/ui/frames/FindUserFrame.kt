@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -24,18 +23,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import by.dismess.android.R
 import by.dismess.android.lib.get
-import by.dismess.android.service.DemoStorage
-import by.dismess.android.service.model.User
-import by.dismess.android.ui.controllers.FindUserFrameController
 import by.dismess.android.ui.controllers.interfaces.FindUserFrameInterface
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.helpers.LineTextField
 import by.dismess.android.ui.helpers.TopPanelIconButton
-import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import by.dismess.core.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -115,7 +110,7 @@ private fun StatusPanel(
             modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Text(
-                lastFoundUser.value!!.displayName,
+                lastFoundUser.value!!.displayName!!,
                 style = MaterialTheme.typography.h5,
                 color = palette.primary
             )
@@ -151,12 +146,3 @@ private fun startSearching(
     }
 }
 
-@Preview
-@Composable
-private fun FindUserFramePreview() {
-    DismessTheme {
-        Surface(color = palette.surface) {
-            FindUserFrameImpl(FindUserFrameController(DemoStorage())) { }
-        }
-    }
-}

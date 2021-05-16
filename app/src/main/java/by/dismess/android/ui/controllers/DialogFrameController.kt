@@ -1,48 +1,51 @@
 package by.dismess.android.ui.controllers
 
 import by.dismess.android.App
-import by.dismess.android.service.DemoStorage
-import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.controllers.interfaces.DialogFrameInterface
+import by.dismess.core.chating.ChatManager
+import by.dismess.core.chating.elements.Chat
 import by.dismess.core.chating.elements.Message
+import by.dismess.core.chating.viewing.FlowIterator
+import by.dismess.core.events.EventBus
+import by.dismess.core.events.MessageEvent
+import by.dismess.core.managers.DataManager
 import by.dismess.core.utils.UniqID
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.core.context.GlobalContext.get
-import java.net.InetSocketAddress
 import java.util.Date
 
 class DialogFrameController(
-    private val storage: DemoStorage,
     private val chat: Chat,
+    private val dataManager: DataManager = get().get(),
+    private val chatManager: ChatManager = get().get(),
+    private val eventBus: EventBus = get().get(),
     private val app: App = get().get(),
 ) :
     DialogFrameInterface {
     private lateinit var updateMessageListFun: (Message) -> Unit
     override fun registerMessagesListener(func: (message: Message) -> Unit) {
         updateMessageListFun = func
-        app.network.setMessageReceiver { _, data ->
-            val message = Message(Date(), chat.userID, chat.userID, data.decodeToString())
-            chat.messages.add(message)
-            println(message.text)
-//            addMessage(message)
-            func(message)
-        }
+        eventBus.registerHandler<MessageEvent> { event -> func(event.message) }
     }
 
-    override fun getMessages(): MutableList<Message> {
-        return chat.messages
+    override fun getMessages(): MutableList<Message> = runBlocking {
+        val result: MutableList<Message> = mutableListOf()
+        val iterator =
+            FlowIterator.create(chatManager, chat.otherFlow, chat.otherFlow.lastMessage)
+        do {
+            result.add(iterator.value!!)
+        } while (iterator.previous())
+        return@runBlocking result.asReversed()
     }
 
     override fun sendMessage(text: String) {
-        val parts = text.split(':')
-        val address = InetSocketAddress(parts[0], parts[1].toInt())
-        val message = Message(Date(), chat.userID, storage.ownId, parts.last())
+        val message = Message(Date(), chat.id, chat.otherID, text)
         GlobalScope.launch {
-            app.network.sendRawMessage(address, message.text.toByteArray())
+//            app.network.sendRawMessage(address, message.text.toByteArray())
+            chat.sendMessage(message)
         }
-        println("Sended ${message.text} to ${address.address}:${address.port}")
-        chat.messages.add(message)
         addMessage(message)
     }
 
@@ -50,17 +53,15 @@ class DialogFrameController(
         updateMessageListFun(message)
     }
 
-    // 37.214.72.247:35942
-    // 37.214.72.247.41450
     override fun refreshHistory() {
 //        TODO("Not yet implemented")
     }
 
     override fun getChatName(): String {
-        return chat.name
+        return chat.id.toString().substring(0, 6) + "..."
     }
 
-    override fun getOwnId(): UniqID {
-        return storage.ownId
+    override fun getOwnId(): UniqID = runBlocking {
+        return@runBlocking dataManager.getId()
     }
 }

@@ -18,10 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.dismess.android.R
-import by.dismess.android.service.model.Chat
 import by.dismess.android.ui.helpers.CircularImage
 import by.dismess.android.ui.theming.theme.DismessTheme
 import by.dismess.android.ui.theming.theme.palette
+import by.dismess.core.chating.elements.Chat
 
 @Composable
 fun ChatForm(chatModel: Chat, onClick: (Chat) -> Unit, lastMessage: String = "...") {
@@ -39,7 +39,8 @@ fun ChatForm(chatModel: Chat, onClick: (Chat) -> Unit, lastMessage: String = "..
             Spacer(Modifier.width(10.dp))
             Column {
                 Text(
-                    chatModel.name, modifier = Modifier.padding(6.dp),
+                    chatModel.id.toString().substring(0, 6) + "...",
+                    modifier = Modifier.padding(6.dp),
                     style = MaterialTheme.typography.h5
                 )
                 Text(
